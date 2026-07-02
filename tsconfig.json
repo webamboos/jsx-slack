@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "lib": [
       "es2019",
       "es2020.bigint",
       "es2020.string",
-      "es2020.symbol.wellknown",
-      "dom"
+      "es2020.symbol.wellknown"
     ],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "nodenext",
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "sourceMap": true,
