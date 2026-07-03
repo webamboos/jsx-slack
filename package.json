@@ -1,31 +1,7 @@
 {
   "name": "jsx-slack-root",
   "private": true,
-  "version": "7.0.0",
-  "description": "Build JSON object for Slack Block Kit surfaces from JSX",
-  "keywords": [
-    "block-kit",
-    "bot",
-    "jsx",
-    "modal",
-    "notification",
-    "slack"
-  ],
-  "homepage": "https://github.com/webamboos/jsx-slack#readme",
-  "bugs": {
-    "url": "https://github.com/webamboos/jsx-slack/issues"
-  },
-  "license": "MIT",
-  "author": {
-    "name": "Webamboos",
-    "url": "https://github.com/webamboos"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/webamboos/jsx-slack"
-  },
   "type": "module",
-  "sideEffects": false,
   "scripts": {
     "check:audit": "pnpm audit",
     "check:fmt": "oxfmt --check",
