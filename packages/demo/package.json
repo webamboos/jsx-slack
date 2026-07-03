@@ -1,7 +1,7 @@
 {
   "name": "demo",
   "scripts": {
-    "start": "node --import @swc-node/register/esm-register src/run.tsx",
+    "check": "tsc --noEmit && node --import @swc-node/register/esm-register src/demo.tsx",
     "test": "vitest run"
   },
   "dependencies": {
