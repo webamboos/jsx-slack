@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "target": "es2022",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+  },
+  "include": ["src", "test"],
+}

@@ -30,6 +30,9 @@
   "sideEffects": false,
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -58,8 +61,7 @@
     "test:coverage": "vitest run --coverage",
     "test:debug": "vitest --inspect",
     "test:esm": "pnpm build && vitest run test/esm.mjs",
-    "measure-font": "NODE_PATH=$(npm exec --package=puppeteer --cmd \"which puppeteer | xargs dirname | xargs dirname\") node ./tools/measure-font.js",
-    "version": "node ./tools/version.js && git add -A CHANGELOG.md"
+    "types": "tsc --emitDeclarationOnly --declaration --outDir dist"
   },
   "dependencies": {
     "@slack/types": "^2.21.1"
