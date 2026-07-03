@@ -36,8 +36,7 @@ export class MrkdwnCompiler {
       if (node.data?.escape) {
         let n = node
 
-        while ((n = n.parent))
-          if (n.type === 'link') return this.escape(node.data.escape)
+        while ((n = n.parent)) if (n.type === 'link') return this.escape(node.data.escape)
 
         return `<!date^00000000^{_}|${node.value}>`
       }
@@ -45,16 +44,12 @@ export class MrkdwnCompiler {
       return this.escape(node.value)
     },
     paragraph: (node) => this.block(node),
-    blockquote: (node) =>
-      [...this.block(node).split('\n'), ''].map((s) => `&gt; ${s}`).join('\n'),
+    blockquote: (node) => [...this.block(node).split('\n'), ''].map((s) => `&gt; ${s}`).join('\n'),
     emphasis: (node) => this.markup('_', this.block(node)),
     strong: (node) => this.markup('*', this.block(node)),
-    delete: (node) =>
-      this.markup('~', this.block(node), { skipCodeBlock: true }),
+    delete: (node) => this.markup('~', this.block(node), { skipCodeBlock: true }),
     inlineCode: (node) =>
-      node.data?.codeBlock
-        ? this.visitors.code(node)
-        : this.markup('`', this.block(node)),
+      node.data?.codeBlock ? this.visitors.code(node) : this.markup('`', this.block(node)),
     code: (node) => {
       const idx = this.codes.length
       this.codes.push(this.block(node))
@@ -78,10 +73,9 @@ export class MrkdwnCompiler {
           return '<!here|here>'
         default: {
           // The content of link must be one line
-          const content = this.renderCodeBlock(
-            this.block(node).replace(/\n+/g, ' '),
-            { singleLine: true },
-          )
+          const content = this.renderCodeBlock(this.block(node).replace(/\n+/g, ' '), {
+            singleLine: true,
+          })
 
           // Date localization
           const date = content.match(/^(<!date\^(?!0{8}).+)\|(.+>)$/)
@@ -119,10 +113,7 @@ export class MrkdwnCompiler {
           ]),
         )
       } else {
-        const bullet =
-          bulletListMarkers[
-            Math.min(this.lists.length, bulletListMarkers.length - 1)
-          ]
+        const bullet = bulletListMarkers[Math.min(this.lists.length, bulletListMarkers.length - 1)]
 
         markers = new Map<number, string>(values.map((v) => [v, bullet]))
       }
@@ -218,20 +209,14 @@ export class MrkdwnCompiler {
       .join('\n')
   }
 
-  private renderCodeBlock = (
-    str: string,
-    { singleLine = false }: { singleLine?: boolean } = {},
-  ) =>
+  private renderCodeBlock = (str: string, { singleLine = false }: { singleLine?: boolean } = {}) =>
     str.replace(/<<code:(\d+)>>/g, (_, num) => {
       const code = this.codes[Number.parseInt(num, 10)]
 
-      return singleLine
-        ? `\`\`\`${code.replace(/\n+/g, ' ')}\`\`\``
-        : `\`\`\`\n${code}\n\`\`\``
+      return singleLine ? `\`\`\`${code.replace(/\n+/g, ' ')}\`\`\`` : `\`\`\`\n${code}\n\`\`\``
     })
 
-  private visit: Visitor = (node, parent) =>
-    this.visitors[node.type](node, parent)
+  private visit: Visitor = (node, parent) => this.visitors[node.type](node, parent)
 }
 
 export default function remarkSlackStringifier(mdast: Node) {

@@ -13,9 +13,7 @@ interface GenerateBlocksContainerOptions {
   name: string
 }
 
-export type PrivateMetadataTransformer = (
-  hiddenValues: object | undefined,
-) => string | undefined
+export type PrivateMetadataTransformer = (hiddenValues: object | undefined) => string | undefined
 
 export interface BlocksProps {
   children: JSXSlack.ChildNodes

@@ -43,8 +43,7 @@ describe('Tagged template', () => {
             <Image src="https://example.com/example.jpg" alt="example" />
             <b>Tagged template</b>
             <br />
-            jsx-slack can use without transpiler by <code>jsxslack</code> tagged
-            template!
+            jsx-slack can use without transpiler by <code>jsxslack</code> tagged template!
           </Section>
           <Divider />
           <Actions>
@@ -65,9 +64,7 @@ describe('Tagged template', () => {
       <Blocks>
         <Actions>
           <Select>
-            ${[...Array(10)].map(
-              (_, i) => jsxslack`<Option value=${i.toString()}>${i}</Option>`,
-            )}
+            ${[...Array(10)].map((_, i) => jsxslack`<Option value=${i.toString()}>${i}</Option>`)}
           </Select>
         </Actions>
       </Blocks>
@@ -111,23 +108,17 @@ describe('Tagged template', () => {
     const [jsxEntitySection] = JSXSlack(
       <Blocks>
         <Section>
-          <code>
-            &lt;span data-test=&quot;&amp;&quot;&gt;&hearts;&lt;/span&gt;
-          </code>
+          <code>&lt;span data-test=&quot;&amp;&quot;&gt;&hearts;&lt;/span&gt;</code>
         </Section>
       </Blocks>,
     )
 
-    expect(jsxEntitySection.text.text).toBe(
-      '`&lt;span data-test="&amp;"&gt;\u2665&lt;/span&gt;`',
-    )
+    expect(jsxEntitySection.text.text).toBe('`&lt;span data-test="&amp;"&gt;\u2665&lt;/span&gt;`')
 
     const [jsxRawEntitySection] = JSXSlack(
       <Blocks>
         <Section>
-          <code>
-            {'&lt;span data-test=&quot;&amp;&quot;&gt;&hearts;&lt;/span&gt;'}
-          </code>
+          <code>{'&lt;span data-test=&quot;&amp;&quot;&gt;&hearts;&lt;/span&gt;'}</code>
         </Section>
       </Blocks>,
     )

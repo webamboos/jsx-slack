@@ -71,12 +71,7 @@ describe('Composition objects', () => {
             <Actions blockId="actions">
               <Button
                 confirm={
-                  <Confirm
-                    title="Share to SNS"
-                    confirm="Yes, please"
-                    deny="Cancel"
-                    style="primary"
-                  >
+                  <Confirm title="Share to SNS" confirm="Yes, please" deny="Cancel" style="primary">
                     <Mrkdwn verbatim={false}>
                       <b>Are you sure?</b> Message will be share.
                     </Mrkdwn>
@@ -229,12 +224,12 @@ describe('Composition objects', () => {
       ]))
 
     it('bypasses HTML-like formatting and auto escape if enabled raw prop', () => {
-      expect(
-        <Mrkdwn raw>{'<!here> test raw string & disabled auto escape'}</Mrkdwn>,
-      ).toStrictEqual({
-        type: 'mrkdwn',
-        text: '<!here> test raw string & disabled auto escape',
-      })
+      expect(<Mrkdwn raw>{'<!here> test raw string & disabled auto escape'}</Mrkdwn>).toStrictEqual(
+        {
+          type: 'mrkdwn',
+          text: '<!here> test raw string & disabled auto escape',
+        },
+      )
 
       expect(
         <Mrkdwn raw>

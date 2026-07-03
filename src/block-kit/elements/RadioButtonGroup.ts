@@ -12,16 +12,12 @@ import { InputComponentProps, wrapInInput } from '../layout/Input'
 import { resolveTagName } from '../utils'
 import { ActionProps, AutoFocusibleProps, focusOnLoadFromProps } from './utils'
 
-interface RadioButtons
-  extends Omit<RadioButtonsElement, 'options' | 'initial_option'> {
+interface RadioButtons extends Omit<RadioButtonsElement, 'options' | 'initial_option'> {
   options: RadioButtonOption[]
   initial_option?: RadioButtonOption
 }
 
-interface RadioButtonGroupBaseProps
-  extends ActionProps,
-    AutoFocusibleProps,
-    ConfirmableProps {
+interface RadioButtonGroupBaseProps extends ActionProps, AutoFocusibleProps, ConfirmableProps {
   children: JSXSlack.ChildNodes
 
   /**
@@ -77,50 +73,47 @@ type RadioButtonGroupProps = InputComponentProps<RadioButtonGroupBaseProps>
  * @return The partial JSON of a block element for the container of radio
  *   buttons, or `input` layout block with it
  */
-export const RadioButtonGroup: BuiltInComponent<RadioButtonGroupProps> =
-  createComponent<RadioButtonGroupProps, RadioButtons | InputBlock>(
-    'RadioButtonGroup',
-    (props) => {
-      let initialOption: RadioButtonOption | undefined
+export const RadioButtonGroup: BuiltInComponent<RadioButtonGroupProps> = createComponent<
+  RadioButtonGroupProps,
+  RadioButtons | InputBlock
+>('RadioButtonGroup', (props) => {
+  let initialOption: RadioButtonOption | undefined
 
-      const options = JSXSlack.Children.toArray(props.children).filter(
-        (option): option is RadioButtonOption => {
-          if (!JSXSlack.isValidElement(option)) return false
+  const options = JSXSlack.Children.toArray(props.children).filter(
+    (option): option is RadioButtonOption => {
+      if (!JSXSlack.isValidElement(option)) return false
 
-          if (option.$$jsxslack.type !== RadioButton) {
-            const tag = resolveTagName(option)
-            throw new JSXSlackError(
-              `<RadioButtonGroup> must contain only <RadioButton>${
-                tag ? ` but it is included ${tag}` : ''
-              }.`,
-              option,
-            )
-          }
-
-          if (option[radioButtonCheckedSymbol]) initialOption = option as any
-
-          return true
-        },
-      )
-
-      if (options.length === 0)
+      if (option.$$jsxslack.type !== RadioButton) {
+        const tag = resolveTagName(option)
         throw new JSXSlackError(
-          '<RadioButtonGroup> must contain least of one <RadioButton>.',
-          props['__source'],
+          `<RadioButtonGroup> must contain only <RadioButton>${
+            tag ? ` but it is included ${tag}` : ''
+          }.`,
+          option,
         )
-
-      const radioButtons: RadioButtons = {
-        type: 'radio_buttons',
-        action_id: props.actionId || props.name,
-        options,
-        initial_option:
-          props.value !== undefined
-            ? options.find((opt) => opt.value === props.value)
-            : initialOption,
-        confirm: props.confirm as any,
-        focus_on_load: focusOnLoadFromProps(props),
       }
 
-      return wrapInInput(radioButtons, props, RadioButtonGroup)
+      if (option[radioButtonCheckedSymbol]) initialOption = option as any
+
+      return true
     },
   )
+
+  if (options.length === 0)
+    throw new JSXSlackError(
+      '<RadioButtonGroup> must contain least of one <RadioButton>.',
+      props['__source'],
+    )
+
+  const radioButtons: RadioButtons = {
+    type: 'radio_buttons',
+    action_id: props.actionId || props.name,
+    options,
+    initial_option:
+      props.value !== undefined ? options.find((opt) => opt.value === props.value) : initialOption,
+    confirm: props.confirm as any,
+    focus_on_load: focusOnLoadFromProps(props),
+  }
+
+  return wrapInInput(radioButtons, props, RadioButtonGroup)
+})

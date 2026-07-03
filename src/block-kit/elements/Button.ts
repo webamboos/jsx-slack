@@ -65,31 +65,27 @@ export interface ButtonProps extends ActionProps, ConfirmableProps {
  *
  * @return The partial JSON of a block element for button
  */
-export const Button = createComponent<ButtonProps, ButtonElement>(
-  'Button',
-  (props) => {
-    let confirm: ConfirmationDialog | undefined
+export const Button = createComponent<ButtonProps, ButtonElement>('Button', (props) => {
+  let confirm: ConfirmationDialog | undefined
 
-    if (props.confirm) {
-      confirm = props.confirm as ConfirmationDialog
+  if (props.confirm) {
+    confirm = props.confirm as ConfirmationDialog
 
-      if (confirm.style === undefined && props.style !== undefined) {
-        confirm = { ...confirm, style: props.style }
+    if (confirm.style === undefined && props.style !== undefined) {
+      confirm = { ...confirm, style: props.style }
 
-        if (JSXSlack.isValidElement(props.confirm))
-          assignMetaFrom(props.confirm, confirm)
-      }
+      if (JSXSlack.isValidElement(props.confirm)) assignMetaFrom(props.confirm, confirm)
     }
+  }
 
-    return {
-      type: 'button',
-      action_id: props.actionId || props.name,
-      accessibility_label: props.accessibilityLabel ?? props['aria-label'],
-      text: plainText(props.children),
-      value: props.value,
-      url: props.url,
-      style: props.style,
-      confirm,
-    }
-  },
-)
+  return {
+    type: 'button',
+    action_id: props.actionId || props.name,
+    accessibility_label: props.accessibilityLabel ?? props['aria-label'],
+    text: plainText(props.children),
+    value: props.value,
+    url: props.url,
+    style: props.style,
+    confirm,
+  }
+})

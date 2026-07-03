@@ -59,11 +59,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Blocks>
             <Actions blockId="actions">
-              <Button
-                actionId="action"
-                value="value"
-                accessibilityLabel="accessibilityLabel"
-              >
+              <Button actionId="action" value="value" accessibilityLabel="accessibilityLabel">
                 Hello!
               </Button>
             </Actions>
@@ -105,11 +101,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Blocks>
             <Actions blockId="actions">
-              <button
-                name="action"
-                value="value"
-                aria-label="accessibilityLabel"
-              >
+              <button name="action" value="value" aria-label="accessibilityLabel">
                 Hello!
               </button>
             </Actions>
@@ -219,10 +211,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Blocks>
             <Actions blockId="actions">
-              <Button
-                style="danger"
-                confirm={<Confirm style="primary">Are you sure?</Confirm>}
-              >
+              <Button style="danger" confirm={<Confirm style="primary">Are you sure?</Confirm>}>
                 Button
               </Button>
             </Actions>
@@ -604,9 +593,7 @@ describe('Interactive components', () => {
         <Select multiple maxSelectedItems={invalidNum}>
           <Option>test</Option>
         </Select>,
-      ).toStrictEqual(
-        expect.not.objectContaining({ max_selected_items: expect.anything() }),
-      )
+      ).toStrictEqual(expect.not.objectContaining({ max_selected_items: expect.anything() }))
     })
 
     it('throws error when passed multiple select in actions block', () =>
@@ -758,9 +745,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Blocks>
             <Actions blockId="actions">
-              <ExternalSelect
-                initialOption={<Option value="option">Option value</Option>}
-              />
+              <ExternalSelect initialOption={<Option value="option">Option value</Option>} />
             </Actions>
           </Blocks>,
         ),
@@ -781,11 +766,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Blocks>
             <Actions blockId="actions">
-              <UsersSelect
-                actionId="users"
-                placeholder="Select user"
-                initialUser="U01234567"
-              />
+              <UsersSelect actionId="users" placeholder="Select user" initialUser="U01234567" />
             </Actions>
           </Blocks>,
         ),
@@ -796,11 +777,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Blocks>
             <Actions blockId="actions">
-              <UsersSelect
-                name="users"
-                placeholder="Select user"
-                value="U01234567"
-              />
+              <UsersSelect name="users" placeholder="Select user" value="U01234567" />
             </Actions>
           </Blocks>,
         ),
@@ -852,9 +829,7 @@ describe('Interactive components', () => {
     })
 
     it('accepts special initial conversation "current" for default_to_current_conversation field', () => {
-      expect(
-        <ConversationsSelect initialConversation="current" />,
-      ).toStrictEqual({
+      expect(<ConversationsSelect initialConversation="current" />).toStrictEqual({
         type: 'conversations_select',
         default_to_current_conversation: true,
       })
@@ -895,42 +870,32 @@ describe('Interactive components', () => {
       expect(filterCmp(<ConversationsSelect include="?" />)).toBeUndefined()
 
       expect(
-        filterCmp(
-          <ConversationsSelect include={['public', 'private', 'im', 'mpim']} />,
-        ),
+        filterCmp(<ConversationsSelect include={['public', 'private', 'im', 'mpim']} />),
       ).toStrictEqual({ include: ['public', 'private', 'im', 'mpim'] })
       expect(
-        filterCmp(
-          <ConversationsSelect multiple include="public private im mpim" />,
-        ),
+        filterCmp(<ConversationsSelect multiple include="public private im mpim" />),
       ).toStrictEqual({ include: ['public', 'private', 'im', 'mpim'] })
-      expect(
-        filterCmp(<ConversationsSelect include={['im', 'im']} />),
-      ).toStrictEqual({ include: ['im'] })
-      expect(
-        filterCmp(<ConversationsSelect include="unknown im" />),
-      ).toStrictEqual({ include: ['im'] })
-      expect(
-        filterCmp(<ConversationsSelect include="   public and  private " />),
-      ).toStrictEqual({ include: ['public', 'private'] })
+      expect(filterCmp(<ConversationsSelect include={['im', 'im']} />)).toStrictEqual({
+        include: ['im'],
+      })
+      expect(filterCmp(<ConversationsSelect include="unknown im" />)).toStrictEqual({
+        include: ['im'],
+      })
+      expect(filterCmp(<ConversationsSelect include="   public and  private " />)).toStrictEqual({
+        include: ['public', 'private'],
+      })
 
       expect(filterCmp(<ConversationsSelect excludeBotUsers />)).toStrictEqual({
         exclude_bot_users: true,
       })
 
-      expect(
-        filterCmp(<ConversationsSelect excludeExternalSharedChannels />),
-      ).toStrictEqual({
+      expect(filterCmp(<ConversationsSelect excludeExternalSharedChannels />)).toStrictEqual({
         exclude_external_shared_channels: true,
       })
 
       expect(
         filterCmp(
-          <ConversationsSelect
-            include="public im"
-            excludeBotUsers
-            excludeExternalSharedChannels
-          />,
+          <ConversationsSelect include="public im" excludeBotUsers excludeExternalSharedChannels />,
         ),
       ).toStrictEqual({
         include: ['public', 'im'],
@@ -972,11 +937,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Blocks>
             <Actions blockId="actions">
-              <ChannelsSelect
-                name="channels"
-                placeholder="Select channel"
-                value="C98765432"
-              />
+              <ChannelsSelect name="channels" placeholder="Select channel" value="C98765432" />
             </Actions>
           </Blocks>,
         ),
@@ -1029,10 +990,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Blocks>
             <Actions id="actions">
-              <Overflow
-                name="overflow_menu"
-                confirm={<Confirm>foobar</Confirm>}
-              >
+              <Overflow name="overflow_menu" confirm={<Confirm>foobar</Confirm>}>
                 <OverflowItem value="menu_a">Menu A</OverflowItem>
                 <OverflowItem value="menu_b">Menu B</OverflowItem>
                 <OverflowItem value="menu_c">Menu C</OverflowItem>
@@ -1119,11 +1077,7 @@ describe('Interactive components', () => {
       expect(
         <Blocks>
           <Actions blockId="actions">
-            <DatePicker
-              name="date_picker"
-              placeholder="Select date"
-              value={datetime}
-            />
+            <DatePicker name="date_picker" placeholder="Select date" value={datetime} />
           </Actions>
         </Blocks>,
       ).toStrictEqual([datePickerAction])
@@ -1143,11 +1097,7 @@ describe('Interactive components', () => {
       expect(
         <Blocks>
           <Actions blockId="actions">
-            <TimePicker
-              actionId="time_picker"
-              placeholder="Select time"
-              initialTime="12:34"
-            />
+            <TimePicker actionId="time_picker" placeholder="Select time" initialTime="12:34" />
           </Actions>
         </Blocks>,
       ).toStrictEqual([timePickerAction])
@@ -1156,11 +1106,7 @@ describe('Interactive components', () => {
       expect(
         <Blocks>
           <Actions blockId="actions">
-            <TimePicker
-              name="time_picker"
-              placeholder="Select time"
-              value={new Date(datetime)}
-            />
+            <TimePicker name="time_picker" placeholder="Select time" value={new Date(datetime)} />
           </Actions>
         </Blocks>,
       ).toStrictEqual([timePickerAction])
@@ -1179,10 +1125,7 @@ describe('Interactive components', () => {
       expect(
         <Blocks>
           <Actions blockId="actions">
-            <DateTimePicker
-              actionId="datetime_picker"
-              initialDateTime={datetime}
-            />
+            <DateTimePicker actionId="datetime_picker" initialDateTime={datetime} />
           </Actions>
         </Blocks>,
       ).toStrictEqual([dateTimePickerAction])
@@ -1200,10 +1143,7 @@ describe('Interactive components', () => {
       expect(
         <Blocks>
           <Actions blockId="actions">
-            <DateTimePicker
-              name="datetime_picker"
-              value="2019-01-23T12:34:56Z"
-            />
+            <DateTimePicker name="datetime_picker" value="2019-01-23T12:34:56Z" />
           </Actions>
         </Blocks>,
       ).toStrictEqual([dateTimePickerAction])
@@ -1281,10 +1221,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Modal title="test">
             <Actions id="actions">
-              <RadioButtonGroup
-                name="radio-buttons"
-                confirm={<Confirm>foobar</Confirm>}
-              >
+              <RadioButtonGroup name="radio-buttons" confirm={<Confirm>foobar</Confirm>}>
                 <RadioButton value="first">
                   1st
                   <small>The first option</small>
@@ -1483,11 +1420,7 @@ describe('Interactive components', () => {
                   *1st*
                   <small>The first option</small>
                 </Checkbox>
-                <Checkbox
-                  value="second"
-                  description={['The ', <i>second</i>, ' option']}
-                  checked
-                >
+                <Checkbox value="second" description={['The ', <i>second</i>, ' option']} checked>
                   2nd
                 </Checkbox>
                 <Checkbox value="third">3rd</Checkbox>
@@ -1502,10 +1435,7 @@ describe('Interactive components', () => {
         JSXSlack(
           <Modal title="modal">
             <Actions blockId="actions">
-              <CheckboxGroup
-                actionId="checkboxGroup"
-                confirm={<Confirm>foobar</Confirm>}
-              >
+              <CheckboxGroup actionId="checkboxGroup" confirm={<Confirm>foobar</Confirm>}>
                 <Checkbox value="first">
                   <Mrkdwn verbatim>
                     <b>1st</b>
@@ -1605,10 +1535,7 @@ describe('Interactive components', () => {
               <Checkbox value="inherited" description="description">
                 <Mrkdwn verbatim={false}>Content</Mrkdwn>
               </Checkbox>
-              <Checkbox
-                value="mixed"
-                description={<Mrkdwn verbatim={false}>description</Mrkdwn>}
-              >
+              <Checkbox value="mixed" description={<Mrkdwn verbatim={false}>description</Mrkdwn>}>
                 <Mrkdwn>Content</Mrkdwn>
               </Checkbox>
               <Checkbox value="small-mixed">
@@ -1695,9 +1622,7 @@ describe('Interactive components', () => {
                 workflow={{
                   trigger: {
                     url: 'https://example.com',
-                    customizable_input_parameters: [
-                      { name: 'name', value: 'value' },
-                    ],
+                    customizable_input_parameters: [{ name: 'name', value: 'value' }],
                   },
                 }}
               >

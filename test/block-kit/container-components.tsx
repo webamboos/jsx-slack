@@ -190,9 +190,7 @@ describe('Container components', () => {
         JSXSlack(
           <Modal title="test">
             <Section>
-              <WorkflowButton
-                workflow={{ trigger: { url: 'https://example.com' } }}
-              >
+              <WorkflowButton workflow={{ trigger: { url: 'https://example.com' } }}>
                 WorkflowButton
               </WorkflowButton>
             </Section>
@@ -204,9 +202,7 @@ describe('Container components', () => {
         JSXSlack(
           <Modal title="test">
             <Actions>
-              <WorkflowButton
-                workflow={{ trigger: { url: 'https://example.com' } }}
-              >
+              <WorkflowButton workflow={{ trigger: { url: 'https://example.com' } }}>
                 WorkflowButton
               </WorkflowButton>
             </Actions>
@@ -447,11 +443,7 @@ describe('Container components', () => {
       // Custom transformer
       expect(
         JSXSlack(
-          <Home
-            privateMetadata={(meta: any) =>
-              meta && new URLSearchParams(meta).toString()
-            }
-          >
+          <Home privateMetadata={(meta: any) => meta && new URLSearchParams(meta).toString()}>
             <Input type="hidden" name="foo" value="bar" />
             <input type="hidden" name="abc" value="def" />
           </Home>,
@@ -496,9 +488,7 @@ describe('Container components', () => {
         JSXSlack(
           <Home>
             <Section>
-              <WorkflowButton
-                workflow={{ trigger: { url: 'https://example.com' } }}
-              >
+              <WorkflowButton workflow={{ trigger: { url: 'https://example.com' } }}>
                 WorkflowButton
               </WorkflowButton>
             </Section>
@@ -510,9 +500,7 @@ describe('Container components', () => {
         JSXSlack(
           <Home>
             <Actions>
-              <WorkflowButton
-                workflow={{ trigger: { url: 'https://example.com' } }}
-              >
+              <WorkflowButton workflow={{ trigger: { url: 'https://example.com' } }}>
                 WorkflowButton
               </WorkflowButton>
             </Actions>

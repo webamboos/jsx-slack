@@ -2,20 +2,20 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "lib": [
-      "es2019",
-      "es2020.bigint",
-      "es2020.string",
-      "es2020.symbol.wellknown"
-    ],
-    "module": "NodeNext",
-    "moduleResolution": "nodenext",
+    "jsxImportSource": "jsx-slack",
+    "module": "es2022",
+    "moduleResolution": "bundler",
     "noImplicitAny": false,
+    "paths": {
+      "jsx-slack/*": ["./src/*"]
+    },
     "resolveJsonModule": true,
+    "rootDir": ".",
     "sourceMap": true,
     "strict": true,
-    "target": "es2019",
-    "noErrorTruncation": true
+    "target": "es2022",
+    "noErrorTruncation": true,
+    "skipLibCheck": true
   },
-  "include": ["src", "test"]
+  "include": ["src"]
 }

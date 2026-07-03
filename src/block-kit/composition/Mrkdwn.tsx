@@ -1,4 +1,3 @@
-/** @jsx createElementInternal */
 import { MrkdwnElement } from '@slack/types'
 import { JSXSlack } from '../../jsx'
 import {
@@ -147,14 +146,11 @@ const defaultProps = { verbatim: true }
  *
  * @returns The JSON of the composition object for mrkdwn text
  */
-export const Mrkdwn = createComponent<MrkdwnProps, MrkdwnElement>(
-  'Mrkdwn',
-  (props) => ({
-    type: 'mrkdwn',
-    text: props.raw ? plainText(props.children).text : toMrkdwn(props.children),
-    verbatim: props.verbatim,
-  }),
-)
+export const Mrkdwn = createComponent<MrkdwnProps, MrkdwnElement>('Mrkdwn', (props) => ({
+  type: 'mrkdwn',
+  text: props.raw ? plainText(props.children).text : toMrkdwn(props.children),
+  verbatim: props.verbatim,
+}))
 
 export const mrkdwn = (
   text: JSXSlack.ChildElements,
@@ -166,10 +162,7 @@ export const mrkdwn = (
   if (isValidElementFromComponent(child, Mrkdwn)) {
     if (force)
       return (
-        <Mrkdwn
-          {...(child.$$jsxslack.props || {})}
-          children={child.$$jsxslack.children}
-        />
+        <Mrkdwn {...(child.$$jsxslack.props || {})} children={child.$$jsxslack.children} />
       ) as any
 
     return child as any
@@ -192,8 +185,7 @@ export const mrkdwnForOption = (
     smallFindTarget.unshift(...contents[0].$$jsxslack.children)
 
   const smallElement = smallFindTarget.find(
-    (c): c is JSXSlack.Node =>
-      JSXSlack.isValidElement(c) && c.$$jsxslack.type === 'small',
+    (c): c is JSXSlack.Node => JSXSlack.isValidElement(c) && c.$$jsxslack.type === 'small',
   )
 
   try {

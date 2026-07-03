@@ -53,8 +53,7 @@ export const Option = createComponent<OptionProps, OptionComposition>(
     const opt: OptionComposition = {
       text,
       value: value || text.text,
-      description:
-        description !== undefined ? plainText(description) : undefined,
+      description: description !== undefined ? plainText(description) : undefined,
     }
 
     if (selected !== undefined)

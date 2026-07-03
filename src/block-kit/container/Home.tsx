@@ -1,11 +1,6 @@
-/** @jsx createElementInternal */
 import { View } from '@slack/types'
 import { JSXSlack } from '../../jsx'
-import {
-  cleanMeta,
-  createComponent,
-  createElementInternal,
-} from '../../jsx-internals'
+import { cleanMeta, createComponent, createElementInternal } from '../../jsx-internals'
 import { Select } from '../elements/Select'
 import { Textarea } from '../input/Textarea'
 import { availableActionTypes } from '../layout/Actions'
@@ -78,9 +73,7 @@ const HomeBlocks = generateBlocksContainer({
     image: true,
     input: true,
     section: generateSectionValidator(
-      [...availableSectionAccessoryTypes].filter(
-        (v) => v !== 'workflow_button',
-      ),
+      [...availableSectionAccessoryTypes].filter((v) => v !== 'workflow_button'),
     ),
     video: true,
   },
@@ -148,33 +141,29 @@ const HomeBlocks = generateBlocksContainer({
 export const Home = createComponent<HomeProps, View>('Home', (props) => {
   let pmObject: Record<string, any> | undefined
 
-  const children = JSXSlack.Children.toArray(props.children).reduce(
-    (reducer: any[], child) => {
-      if (JSXSlack.isValidElement(child)) {
-        const { type, props: childProps } = child.$$jsxslack
+  const children = JSXSlack.Children.toArray(props.children).reduce((reducer: any[], child) => {
+    if (JSXSlack.isValidElement(child)) {
+      const { type, props: childProps } = child.$$jsxslack
 
-        if (type === Input || type === 'input') {
-          if (childProps.type === 'hidden') {
-            pmObject = pmObject || {}
-            pmObject[childProps.name] = childProps.value
-            return reducer
-          }
-
-          // Just ignore submit type within the home tab
-          if (childProps.type === 'submit') return reducer
+      if (type === Input || type === 'input') {
+        if (childProps.type === 'hidden') {
+          pmObject = pmObject || {}
+          pmObject[childProps.name] = childProps.value
+          return reducer
         }
-      }
 
-      if (typeof child === 'object') return [...reducer, child]
-      return reducer
-    },
-    [],
-  )
+        // Just ignore submit type within the home tab
+        if (childProps.type === 'submit') return reducer
+      }
+    }
+
+    if (typeof child === 'object') return [...reducer, child]
+    return reducer
+  }, [])
 
   const private_metadata = (() => {
     if (typeof props.privateMetadata === 'string') return props.privateMetadata
-    if (typeof props.privateMetadata === 'function')
-      return props.privateMetadata(pmObject)
+    if (typeof props.privateMetadata === 'function') return props.privateMetadata(pmObject)
 
     return pmObject && JSON.stringify(pmObject)
   })()

@@ -1,4 +1,3 @@
-/** @jsx createElementInternal */
 import { StaticSelect, MultiStaticSelect, InputBlock } from '@slack/types'
 import { JSXSlackError } from '../../error'
 import { JSXSlack } from '../../jsx'
@@ -27,10 +26,7 @@ import {
 } from './utils'
 
 interface SingleSelectProps
-  extends ActionProps,
-    AutoFocusibleProps,
-    ConfirmableProps,
-    SingleSelectableProps {
+  extends ActionProps, AutoFocusibleProps, ConfirmableProps, SingleSelectableProps {
   children: JSXSlack.ChildNodes
 
   /** The placeholder text shown in select field. */
@@ -46,8 +42,7 @@ interface SingleSelectProps
   value?: string | null
 }
 
-interface MultiSelectProps
-  extends MultiSelectablePropsFrom<SingleSelectProps, 'value'> {
+interface MultiSelectProps extends MultiSelectablePropsFrom<SingleSelectProps, 'value'> {
   /** In multiple select, you can choose multiple values through array. */
   value?: string | string[] | null
 }
@@ -55,9 +50,7 @@ interface MultiSelectProps
 type StaticSelectElement = StaticSelect
 type MultiStaticSelectElement = MultiStaticSelect
 
-export type SelectProps = InputComponentProps<
-  SingleSelectProps | MultiSelectProps
->
+export type SelectProps = InputComponentProps<SingleSelectProps | MultiSelectProps>
 
 /**
  * The interactive component or input component for
@@ -91,8 +84,7 @@ export const Select: BuiltInComponent<SelectProps> = createComponent<
   StaticSelectElement | MultiStaticSelectElement | InputBlock
 >('Select', (props) => {
   const fragment: SelectFragmentObject = ((): any => {
-    if (isValidElementFromComponent(props.children, SelectFragment))
-      return props.children
+    if (isValidElementFromComponent(props.children, SelectFragment)) return props.children
 
     return <SelectFragment from={Select} children={props.children} />
   })()
@@ -117,8 +109,7 @@ export const Select: BuiltInComponent<SelectProps> = createComponent<
         })(props.value)
 
   const action_id = props.actionId || props.name
-  const placeholder =
-    props.placeholder !== undefined ? plainText(props.placeholder) : undefined
+  const placeholder = props.placeholder !== undefined ? plainText(props.placeholder) : undefined
 
   return wrapInInput<StaticSelectElement | MultiStaticSelectElement>(
     props.multiple
@@ -127,8 +118,7 @@ export const Select: BuiltInComponent<SelectProps> = createComponent<
           action_id,
           placeholder,
           ...fragment,
-          initial_options:
-            initialOptions.length > 0 ? initialOptions : undefined,
+          initial_options: initialOptions.length > 0 ? initialOptions : undefined,
           max_selected_items: coerceToInteger(props.maxSelectedItems),
           confirm: props.confirm as any,
           focus_on_load: focusOnLoadFromProps(props),
@@ -139,9 +129,7 @@ export const Select: BuiltInComponent<SelectProps> = createComponent<
           placeholder,
           ...fragment,
           initial_option:
-            initialOptions.length > 0
-              ? initialOptions[initialOptions.length - 1]
-              : undefined,
+            initialOptions.length > 0 ? initialOptions[initialOptions.length - 1] : undefined,
           confirm: props.confirm as any,
           focus_on_load: focusOnLoadFromProps(props),
         },

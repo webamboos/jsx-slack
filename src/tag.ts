@@ -3,10 +3,7 @@ import * as blockKitComponents from './components'
 import { createElementInternal } from './jsx-internals'
 import { he } from './prebundles/he'
 
-type JSXSlackTemplateTag = (
-  template: readonly string[],
-  ...substitutions: any[]
-) => any
+type JSXSlackTemplateTag = (template: readonly string[], ...substitutions: any[]) => any
 
 const strSubSymbol = Symbol('jsx-slack-subsitution')
 
@@ -24,8 +21,7 @@ const normalize = (value: any, isAttributeValue = false) => {
 const normalizeType = (type: any): any => {
   const func = normalize(type)
 
-  return typeof func === 'string' &&
-    Object.prototype.hasOwnProperty.call(blockKitComponents, func)
+  return typeof func === 'string' && Object.prototype.hasOwnProperty.call(blockKitComponents, func)
     ? blockKitComponents[func]
     : func
 }
@@ -34,10 +30,7 @@ const render = htm.bind((type, props, ...children) =>
   createElementInternal(
     normalizeType(type),
     props
-      ? Object.keys(props).reduce(
-          (p, k) => ({ ...p, [k]: normalize(props[k], true) }),
-          {},
-        )
+      ? Object.keys(props).reduce((p, k) => ({ ...p, [k]: normalize(props[k], true) }), {})
       : props,
     ...children.map((c) => normalize(c)),
   ),
@@ -93,8 +86,6 @@ export const jsxslack: JSXSlackTemplateTag = (template, ...substitutions) =>
   render(
     template as TemplateStringsArray,
     ...substitutions.map((s) =>
-      isString(s)
-        ? Object.defineProperty(new String(s), strSubSymbol, { value: true })
-        : s,
+      isString(s) ? Object.defineProperty(new String(s), strSubSymbol, { value: true }) : s,
     ),
   )

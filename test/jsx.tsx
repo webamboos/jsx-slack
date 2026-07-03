@@ -1,5 +1,6 @@
 /** @jsx JSXSlack.h */
 import type { FC, FunctionComponent } from '../src/index'
+import { vi } from 'vitest'
 import { JSXSlack } from '../src/jsx'
 import {
   createComponent,
@@ -64,9 +65,7 @@ describe('JSX', () => {
         expect(isValidElementFromComponent(NotBuiltIn)).toBe(false)
         expect(isValidElementFromComponent(<BuiltIn />)).toBe(true)
         expect(isValidElementFromComponent(<NotBuiltIn />)).toBe(false)
-        expect(
-          isValidElementFromComponent(<JSXSlack.Fragment children={'test'} />),
-        ).toBe(true)
+        expect(isValidElementFromComponent(<JSXSlack.Fragment children={'test'} />)).toBe(true)
       })
 
       it('matches into specific component if second argument has a component', () => {
@@ -95,7 +94,7 @@ describe('JSX', () => {
       })
 
       it('returns passed value as is without calling callback when passed a nullish value', () => {
-        const callbackFn = jest.fn()
+        const callbackFn = vi.fn()
 
         expect(JSXSlack.Children.map(null, callbackFn)).toBeNull()
         expect(JSXSlack.Children.map(undefined, callbackFn)).toBeUndefined()
@@ -105,9 +104,7 @@ describe('JSX', () => {
       it('invokes callback function with null when the traversed child is invalid as element', () => {
         expect.assertions(4)
 
-        JSXSlack.Children.map([null, undefined, true, false], (v) =>
-          expect(v).toBeNull(),
-        )
+        JSXSlack.Children.map([null, undefined, true, false], (v) => expect(v).toBeNull())
       })
 
       it('does not collect mapped value when returned nullish value by callback', () => {
@@ -131,17 +128,11 @@ describe('JSX', () => {
           ),
         ).toStrictEqual([['abc', 123]])
 
-        const ArrayComponent: JSXSlack.FC = () => (
-          <JSXSlack.Fragment children={[7, 8, 9]} />
-        )
+        const ArrayComponent: JSXSlack.FC = () => <JSXSlack.Fragment children={[7, 8, 9]} />
 
         expect(
           JSXSlack.Children.map(
-            [
-              <JSXSlack.Fragment children={[1, 2, 3]} />,
-              [4, 5, 6],
-              <ArrayComponent />,
-            ],
+            [<JSXSlack.Fragment children={[1, 2, 3]} />, [4, 5, 6], <ArrayComponent />],
             (v) => v,
           ),
         ).toStrictEqual([[1, 2, 3], 4, 5, 6, [7, 8, 9]])
@@ -152,17 +143,14 @@ describe('JSX', () => {
         const UserComponent: any = () => ['user', 'cmp']
 
         expect(
-          JSXSlack.Children.map(
-            [<BuiltinComponent />, <UserComponent />],
-            (v) => v,
-          ),
+          JSXSlack.Children.map([<BuiltinComponent />, <UserComponent />], (v) => v),
         ).toStrictEqual([['built-in', 'cmp'], 'user', 'cmp'])
       })
     })
 
     describe('JSXSlack.Children.forEach()', () => {
       it('calls JSXSlack.Children.map() but returns no value', () => {
-        const callbackFn = jest.fn(() => 'test')
+        const callbackFn = vi.fn(() => 'test')
 
         expect(JSXSlack.Children.forEach([1, 2, 3], callbackFn)).toBeUndefined()
         expect(callbackFn).toHaveBeenCalledTimes(3)
@@ -181,9 +169,7 @@ describe('JSX', () => {
         expect(JSXSlack.Children.count(undefined)).toBe(0)
         expect(JSXSlack.Children.count([null])).toBe(1)
         expect(JSXSlack.Children.count([false, true, null, undefined])).toBe(4)
-        expect(
-          JSXSlack.Children.count(<JSXSlack.Fragment children={[1, 2, 3]} />),
-        ).toBe(1)
+        expect(JSXSlack.Children.count(<JSXSlack.Fragment children={[1, 2, 3]} />)).toBe(1)
       })
     })
 
@@ -194,12 +180,10 @@ describe('JSX', () => {
         const UserComponent: any = () => ({})
 
         expect(JSXSlack.Children.only(<BuiltIn />)).toStrictEqual(<BuiltIn />)
-        expect(JSXSlack.Children.only(<UserComponent />)).toStrictEqual(
-          <UserComponent />,
+        expect(JSXSlack.Children.only(<UserComponent />)).toStrictEqual(<UserComponent />)
+        expect(JSXSlack.Children.only(<JSXSlack.Fragment children={[1, 2, 3]} />)).toStrictEqual(
+          <JSXSlack.Fragment children={[1, 2, 3]} />,
         )
-        expect(
-          JSXSlack.Children.only(<JSXSlack.Fragment children={[1, 2, 3]} />),
-        ).toStrictEqual(<JSXSlack.Fragment children={[1, 2, 3]} />)
       })
 
       it('throws error if passed invalid element', () => {
@@ -228,9 +212,7 @@ describe('JSX', () => {
         const ArrayComponent = createComponent('', () => [1, 2, 3])
 
         // Functional component by user must return a fragment to pass array
-        const UserArrayComponent: JSXSlack.FC = () => (
-          <JSXSlack.Fragment children={[4, 5, 6]} />
-        )
+        const UserArrayComponent: JSXSlack.FC = () => <JSXSlack.Fragment children={[4, 5, 6]} />
 
         // But also can return array directly for React compatibility
         const ReactLikeComponent: any = () => [7, 8, 9]
@@ -264,9 +246,9 @@ describe('JSX', () => {
         const fc: JSXSlack.FC<{ test: string }> = ({ test }) => (
           <JSXSlack.Fragment>{test}</JSXSlack.Fragment>
         )
-        const publicFunctionComponent: FunctionComponent<{ test: string }> = ({
-          test,
-        }) => <JSXSlack.Fragment>{test}</JSXSlack.Fragment>
+        const publicFunctionComponent: FunctionComponent<{ test: string }> = ({ test }) => (
+          <JSXSlack.Fragment>{test}</JSXSlack.Fragment>
+        )
         const publicFC: FC<Record<string, never>> = () => null
 
         // // @ts-expect-error children prop is not allowed in FunctionComponent

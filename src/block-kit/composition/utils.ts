@@ -1,9 +1,7 @@
 import { ConversationsSelect, PlainTextElement } from '@slack/types'
 import { JSXSlack } from '../../jsx'
 
-type DispatchActionConfigTriggerActionsOn =
-  | 'onEnterPressed'
-  | 'onCharacterEntered'
+type DispatchActionConfigTriggerActionsOn = 'onEnterPressed' | 'onCharacterEntered'
 
 type FilterComposition = ConversationsSelect['filter']
 type FilterIncludeKind = 'im' | 'mpim' | 'private' | 'public'
@@ -32,10 +30,7 @@ export interface FilterProps {
    *
    * By default, all conversation types are included.
    */
-  include?:
-    | FilterIncludeKind
-    | FilterIncludeKind[]
-    | SpaceSeparatedFilterIncludeKind
+  include?: FilterIncludeKind | FilterIncludeKind[] | SpaceSeparatedFilterIncludeKind
 
   /**
    * A boolean value whether to exclude external
@@ -72,10 +67,7 @@ export interface InputDispatchActionProps {
 }
 
 // Text composition object for plain text
-const renderAsPlainText = (
-  children: JSXSlack.ChildElements,
-  layoutTags = false,
-) =>
+const renderAsPlainText = (children: JSXSlack.ChildElements, layoutTags = false) =>
   JSXSlack.Children.toArray(children)
     .map((child) => {
       if (!JSXSlack.isValidElement(child)) return child
@@ -115,9 +107,7 @@ export const filter = (props: FilterProps): FilterComposition => {
   if (include) {
     if (!Array.isArray(include)) include = include.split(' ') as any[]
 
-    include = [...new Set(include)].filter((o) =>
-      ['im', 'mpim', 'private', 'public'].includes(o),
-    )
+    include = [...new Set(include)].filter((o) => ['im', 'mpim', 'private', 'public'].includes(o))
 
     if (include.length > 0) filterComposition.include = include
   }
@@ -126,12 +116,9 @@ export const filter = (props: FilterProps): FilterComposition => {
     filterComposition.exclude_bot_users = !!props.excludeBotUsers
 
   if (props.excludeExternalSharedChannels !== undefined)
-    filterComposition.exclude_external_shared_channels =
-      !!props.excludeExternalSharedChannels
+    filterComposition.exclude_external_shared_channels = !!props.excludeExternalSharedChannels
 
-  return Object.keys(filterComposition).length > 0
-    ? filterComposition
-    : undefined
+  return Object.keys(filterComposition).length > 0 ? filterComposition : undefined
 }
 
 // Dispatch action configuration composition object

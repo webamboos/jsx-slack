@@ -192,16 +192,8 @@ describe('Layout blocks', () => {
           initialOption={<Option value="a">a</Option>}
         />,
         <UsersSelect multiple maxSelectedItems={2} initialUser="U00000000" />,
-        <ConversationsSelect
-          multiple
-          maxSelectedItems={2}
-          initialConversation={['C00000000']}
-        />,
-        <ChannelsSelect
-          multiple
-          maxSelectedItems={2}
-          initialChannel="D00000000"
-        />,
+        <ConversationsSelect multiple maxSelectedItems={2} initialConversation={['C00000000']} />,
+        <ChannelsSelect multiple maxSelectedItems={2} initialChannel="D00000000" />,
       ]) {
         const [ms] = JSXSlack(
           <Blocks>
@@ -212,9 +204,7 @@ describe('Layout blocks', () => {
         expect(ms.accessory.type.startsWith('multi_')).toBe(true)
         expect(ms.accessory.max_selected_items).toBe(2)
 
-        const initialKey: any = Object.keys(ms.accessory).find((k) =>
-          k.startsWith('initial_'),
-        )
+        const initialKey: any = Object.keys(ms.accessory).find((k) => k.startsWith('initial_'))
         expect(ms.accessory[initialKey]).toHaveLength(1)
       }
     })
@@ -379,10 +369,7 @@ describe('Layout blocks', () => {
               Hello! <b>World!</b>
               <img src="https://example.com/test.jpg" alt="image" />
               Image + Text
-              <Image
-                src="https://example.com/test2.jpg"
-                alt="image component"
-              />
+              <Image src="https://example.com/test2.jpg" alt="image component" />
             </Context>
           </Blocks>,
         ),
@@ -615,13 +602,9 @@ describe('Layout blocks', () => {
 
       expect(<Blocks>{videoIntrinsicElement}</Blocks>).toStrictEqual([video])
 
-      expect(
-        <Modal title="modal">{videoIntrinsicElement}</Modal>,
-      ).toHaveProperty('blocks', [video])
+      expect(<Modal title="modal">{videoIntrinsicElement}</Modal>).toHaveProperty('blocks', [video])
 
-      expect(<Home>{videoIntrinsicElement}</Home>).toHaveProperty('blocks', [
-        video,
-      ])
+      expect(<Home>{videoIntrinsicElement}</Home>).toHaveProperty('blocks', [video])
     })
   })
 
@@ -666,9 +649,7 @@ describe('Layout blocks', () => {
         },
       ])
 
-      expect(<Call id="abc" callId="R123" />).toStrictEqual(
-        <Call blockId="abc" callId="R123" />,
-      )
+      expect(<Call id="abc" callId="R123" />).toStrictEqual(<Call blockId="abc" callId="R123" />)
     })
   })
 
@@ -703,12 +684,7 @@ describe('Layout blocks', () => {
       expect(
         JSXSlack(
           <Modal title="test">
-            <Input
-              id="input-id"
-              label="Select"
-              title="foobar"
-              children={select}
-            />
+            <Input id="input-id" label="Select" title="foobar" children={select} />
           </Modal>,
         ).blocks,
       ).toStrictEqual(blocks)
@@ -717,12 +693,7 @@ describe('Layout blocks', () => {
       expect(
         JSXSlack(
           <Modal title="test">
-            <input
-              id="input-id"
-              label="Select"
-              title="foobar"
-              children={select}
-            />
+            <input id="input-id" label="Select" title="foobar" children={select} />
           </Modal>,
         ).blocks,
       ).toStrictEqual(blocks)

@@ -1,11 +1,6 @@
-/** @jsx createElementInternal */
 import { PlainTextElement, View } from '@slack/types'
 import { JSXSlack } from '../../jsx'
-import {
-  cleanMeta,
-  createComponent,
-  createElementInternal,
-} from '../../jsx-internals'
+import { cleanMeta, createComponent, createElementInternal } from '../../jsx-internals'
 import { DistributedProps } from '../../utils'
 import { plainText } from '../composition/utils'
 import { Select } from '../elements/Select'
@@ -134,9 +129,7 @@ const ModalBlocks = generateBlocksContainer({
     image: true,
     input: true,
     section: generateSectionValidator(
-      [...availableSectionAccessoryTypes].filter(
-        (v) => v !== 'workflow_button',
-      ),
+      [...availableSectionAccessoryTypes].filter((v) => v !== 'workflow_button'),
     ),
     video: true,
   },
@@ -209,39 +202,35 @@ export const Modal = createComponent<ModalProps, View>('Modal', (props) => {
   let submit: PlainTextElement | undefined
   let pmObject: Record<string, any> | undefined
 
-  const children = JSXSlack.Children.toArray(props.children).reduce(
-    (reducer: any[], child) => {
-      if (JSXSlack.isValidElement(child)) {
-        const { type, props: childProps } = child.$$jsxslack
+  const children = JSXSlack.Children.toArray(props.children).reduce((reducer: any[], child) => {
+    if (JSXSlack.isValidElement(child)) {
+      const { type, props: childProps } = child.$$jsxslack
 
-        if (type === Input || type === 'input') {
-          if (childProps.type === 'hidden') {
-            pmObject = pmObject || {}
-            pmObject[childProps.name] = childProps.value
-            return reducer
-          }
-          if (childProps.type === 'submit') {
-            submit = plainText(childProps.value)
-            return reducer
-          }
-          hasInput = true
+      if (type === Input || type === 'input') {
+        if (childProps.type === 'hidden') {
+          pmObject = pmObject || {}
+          pmObject[childProps.name] = childProps.value
+          return reducer
         }
+        if (childProps.type === 'submit') {
+          submit = plainText(childProps.value)
+          return reducer
+        }
+        hasInput = true
       }
-      if (typeof child === 'object') {
-        if ((child as any).type === 'input') hasInput = true
-        return [...reducer, child]
-      }
-      return reducer
-    },
-    [],
-  )
+    }
+    if (typeof child === 'object') {
+      if ((child as any).type === 'input') hasInput = true
+      return [...reducer, child]
+    }
+    return reducer
+  }, [])
 
   if (!submit && hasInput) submit = commonDefaultSubmit
 
   const privateMetadata = (() => {
     if (typeof props.privateMetadata === 'string') return props.privateMetadata
-    if (typeof props.privateMetadata === 'function')
-      return props.privateMetadata(pmObject)
+    if (typeof props.privateMetadata === 'function') return props.privateMetadata(pmObject)
 
     return pmObject && JSON.stringify(pmObject)
   })()
@@ -252,10 +241,8 @@ export const Modal = createComponent<ModalProps, View>('Modal', (props) => {
     title: plainText(props.title || ''),
     submit: props.submit ? plainText(props.submit) : submit,
     close: props.close ? plainText(props.close) : undefined,
-    clear_on_close:
-      props.clearOnClose !== undefined ? !!props.clearOnClose : undefined,
-    notify_on_close:
-      props.notifyOnClose !== undefined ? !!props.notifyOnClose : undefined,
+    clear_on_close: props.clearOnClose !== undefined ? !!props.clearOnClose : undefined,
+    notify_on_close: props.notifyOnClose !== undefined ? !!props.notifyOnClose : undefined,
     external_id: props.externalId,
   } as const
 

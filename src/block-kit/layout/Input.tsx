@@ -1,4 +1,3 @@
-/** @jsx createElementInternal */
 import { InputBlock } from '@slack/types'
 import { JSXSlackError } from '../../error'
 import { JSXSlack } from '../../jsx'
@@ -18,11 +17,7 @@ import { EmailTextInput } from '../elements/EmailTextInput'
 import { NumberTextInput } from '../elements/NumberTextInput'
 import { PlainTextInput } from '../elements/PlainTextInput'
 import { UrlTextInput } from '../elements/UrlTextInput'
-import {
-  ActionProps,
-  AutoFocusibleProps,
-  focusOnLoadFromProps,
-} from '../elements/utils'
+import { ActionProps, AutoFocusibleProps, focusOnLoadFromProps } from '../elements/utils'
 import { resolveTagName } from '../utils'
 import { LayoutBlockProps } from './utils'
 
@@ -107,7 +102,8 @@ interface InputComponentBaseProps extends Omit<InputLayoutProps, 'children'> {
 }
 
 interface InputTextBaseProps
-  extends Omit<InputComponentBaseProps, 'dispatchAction'>,
+  extends
+    Omit<InputComponentBaseProps, 'dispatchAction'>,
     ActionProps,
     AutoFocusibleProps,
     InputDispatchActionProps {
@@ -261,9 +257,7 @@ export const knownInputs = [
 
 const ElementValidator = ({ element, from }): any => {
   if (typeof element !== 'object')
-    throw new JSXSlackError(
-      `${from} has invalid value as an element of input layout block.`,
-    )
+    throw new JSXSlackError(`${from} has invalid value as an element of input layout block.`)
 
   if (!knownInputs.includes(element.type)) {
     const generator = resolveTagName(element)
@@ -288,11 +282,7 @@ export const wrapInInput = <T extends object>(
   const element: any = cleanMeta(
     <ElementValidator
       element={obj}
-      from={
-        generatedFrom
-          ? `<${generatedFrom.$$jsxslackComponent.name}>`
-          : 'Input layout block'
-      }
+      from={generatedFrom ? `<${generatedFrom.$$jsxslackComponent.name}>` : 'Input layout block'}
     />,
   )
 
@@ -305,8 +295,7 @@ export const wrapInInput = <T extends object>(
       label: plainText(props.label),
       hint: hint ? plainText(hint) : undefined,
       optional: !props.required,
-      dispatch_action:
-        props.dispatchAction !== undefined ? !!props.dispatchAction : undefined,
+      dispatch_action: props.dispatchAction !== undefined ? !!props.dispatchAction : undefined,
       element,
     }
   }
@@ -458,9 +447,7 @@ export const Input: BuiltInComponent<InputProps> = createComponent<
               <NumberTextInput
                 {...baseProps}
                 initialValue={coerceToString(props.value) || undefined}
-                isDecimalAllowed={
-                  props.decimal === undefined ? undefined : !!props.decimal
-                }
+                isDecimalAllowed={props.decimal === undefined ? undefined : !!props.decimal}
                 maxValue={coerceToString(props.max)}
                 minValue={coerceToString(props.min)}
               />
@@ -479,8 +466,7 @@ export const Input: BuiltInComponent<InputProps> = createComponent<
       ),
     {
       ...props,
-      dispatchAction:
-        props.dispatchAction === undefined ? undefined : !!props.dispatchAction,
+      dispatchAction: props.dispatchAction === undefined ? undefined : !!props.dispatchAction,
     },
     Input,
   )

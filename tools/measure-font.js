@@ -14,8 +14,7 @@ const saveTo = path.resolve(__dirname, '../src/data/font-width.json')
 
   const measuredData = await page.evaluate(() => {
     // The bullet of list item may take these characters
-    const letters =
-      '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-.•◦▪'
+    const letters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-.•◦▪'
 
     // Use Unicode spaces that would not be collapsed implicitly
     const spaces = '\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a'

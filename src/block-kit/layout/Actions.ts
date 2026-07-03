@@ -40,10 +40,7 @@ export const availableActionTypes = [
 ] as const
 
 const actionTypeValidators: Record<string, (action: Actionable) => void> = {
-  ...availableActionTypes.reduce(
-    (reduced, type) => ({ ...reduced, [type]: () => {} }),
-    {},
-  ),
+  ...availableActionTypes.reduce((reduced, type) => ({ ...reduced, [type]: () => {} }), {}),
 
   // Validator for responseUrlEnabled prop
   channels_select: (element: any) => {

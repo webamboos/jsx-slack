@@ -1,4 +1,4 @@
-/* eslint-disable import/no-unresolved */
+import { describe, it, expect } from 'vitest'
 import { jsxslack, Fragment } from 'jsx-slack'
 import * as jsxDevRuntime from 'jsx-slack/jsx-dev-runtime'
 import * as jsxRuntime from 'jsx-slack/jsx-runtime'

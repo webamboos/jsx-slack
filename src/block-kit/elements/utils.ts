@@ -61,10 +61,11 @@ export interface ResponsableUrlProps {
   responseUrlEnabled?: boolean
 }
 
-export type MultiSelectablePropsFrom<
-  T extends object,
-  O extends string = never,
-> = Omit<T, 'multiple' | O> & MultiSelectableProps
+export type MultiSelectablePropsFrom<T extends object, O extends string = never> = Omit<
+  T,
+  'multiple' | O
+> &
+  MultiSelectableProps
 
 export const focusOnLoadFromProps = (
   props: AutoFocusibleProps & AutoFocusibleIntrinsicProps,

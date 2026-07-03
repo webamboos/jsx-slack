@@ -1,9 +1,5 @@
 import { JSXSlack } from '../jsx'
-import {
-  cleanMeta,
-  createElementInternal,
-  isValidComponent,
-} from '../jsx-internals'
+import { cleanMeta, createElementInternal, isValidComponent } from '../jsx-internals'
 
 export const assignMetaFrom = <T extends object>(
   element: JSXSlack.Node,
@@ -37,8 +33,7 @@ export const alias = (
 
 export const resolveTagName = (element: unknown): string | undefined => {
   if (JSXSlack.isValidElement(element)) {
-    if (typeof element.$$jsxslack.type === 'string')
-      return `<${element.$$jsxslack.type}>`
+    if (typeof element.$$jsxslack.type === 'string') return `<${element.$$jsxslack.type}>`
 
     if (isValidComponent(element.$$jsxslack.type))
       return `<${element.$$jsxslack.type.$$jsxslackComponent.name}>`

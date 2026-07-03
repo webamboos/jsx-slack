@@ -8,9 +8,7 @@ interface JSXSource {
 }
 
 const getSource = (source: unknown): JSXSource | undefined => {
-  const src = JSXSlack.isValidElement(source)
-    ? source.$$jsxslack.props?.__source
-    : source
+  const src = JSXSlack.isValidElement(source) ? source.$$jsxslack.props?.__source : source
 
   if (
     typeof src === 'object' &&

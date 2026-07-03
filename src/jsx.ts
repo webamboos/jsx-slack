@@ -67,9 +67,7 @@ export namespace JSXSlack {
     children?: ChildElements
   } & P
 
-  export type FunctionComponent<P extends {} = {}> = (
-    props: P,
-  ) => Node<P> | null
+  export type FunctionComponent<P extends {} = {}> = (props: P) => Node<P> | null
   export type FC<P extends {} = {}> = FunctionComponent<P>
 
   export interface Node<P extends {} = {}> {
@@ -159,8 +157,7 @@ export namespace JSXSlack {
      * @param children - The target element(s) to count
      * @return The total number of elements in the passed children
      */
-    count: (children: ChildElements): number =>
-      children == null ? 0 : flat(children).length,
+    count: (children: ChildElements): number => (children == null ? 0 : flat(children).length),
 
     /**
      * Like `JSXSlack.Children.map()`, but no return value.
@@ -196,15 +193,12 @@ export namespace JSXSlack {
     map: <T>(children: ChildElements, callbackFn: MapCallbackFn<T>) => {
       if (children == null) return children
 
-      return flat(children).reduce(
-        (reduced: Exclude<T, null | undefined>[], child, idx) => {
-          const ret: any = callbackFn.call(child, child, idx)
-          if (ret != null) reduced.push(ret)
+      return flat(children).reduce((reduced: Exclude<T, null | undefined>[], child, idx) => {
+        const ret: any = callbackFn.call(child, child, idx)
+        if (ret != null) reduced.push(ret)
 
-          return reduced
-        },
-        [],
-      )
+        return reduced
+      }, [])
     },
 
     /**
@@ -223,9 +217,7 @@ export namespace JSXSlack {
     only: (children: ChildElements): JSX.Element => {
       if (isValidElement(children)) return children
 
-      throw new Error(
-        'JSXSlack.Children.only expected to receive a single JSXSlack element child.',
-      )
+      throw new Error('JSXSlack.Children.only expected to receive a single JSXSlack element child.')
     },
 
     /**
@@ -595,10 +587,8 @@ export namespace JSXSlack {
        * text for not-supported Slack client.
        */
       time:
-        | (TimeIntrinsicElementProps &
-            Required<Pick<TimeIntrinsicElementProps, 'dateTime'>>)
-        | (TimeIntrinsicElementProps &
-            Required<Pick<TimeIntrinsicElementProps, 'datetime'>>)
+        | (TimeIntrinsicElementProps & Required<Pick<TimeIntrinsicElementProps, 'dateTime'>>)
+        | (TimeIntrinsicElementProps & Required<Pick<TimeIntrinsicElementProps, 'datetime'>>)
 
       /**
        * Create the unordered list.

@@ -72,16 +72,16 @@ export interface WorkflowButtonProps extends ActionProps {
  *
  * @return The partial JSON of a block element for the workflow button
  */
-export const WorkflowButton = createComponent<
-  WorkflowButtonProps,
-  WorkflowButtonElement
->('WorkflowButton', (props) => {
-  return {
-    type: 'workflow_button',
-    action_id: props.actionId || props.name,
-    accessibility_label: props.accessibilityLabel ?? props['aria-label'],
-    text: plainText(props.children),
-    style: props.style,
-    workflow: props.workflow,
-  }
-})
+export const WorkflowButton = createComponent<WorkflowButtonProps, WorkflowButtonElement>(
+  'WorkflowButton',
+  (props) => {
+    return {
+      type: 'workflow_button',
+      action_id: props.actionId || props.name,
+      accessibility_label: props.accessibilityLabel ?? props['aria-label'],
+      text: plainText(props.children),
+      style: props.style,
+      workflow: props.workflow,
+    }
+  },
+)

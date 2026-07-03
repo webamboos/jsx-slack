@@ -89,10 +89,8 @@ export const availableSectionAccessoryTypes = Object.keys(
  *
  * @return The JSON of text composition object suited to section's field
  */
-export const Field = createComponent<FieldProps, MrkdwnElement>(
-  'Field',
-  ({ children }) =>
-    Object.defineProperty(mrkdwn(children), fieldSymbol, { value: true }),
+export const Field = createComponent<FieldProps, MrkdwnElement>('Field', ({ children }) =>
+  Object.defineProperty(mrkdwn(children), fieldSymbol, { value: true }),
 )
 
 /**

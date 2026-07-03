@@ -21,11 +21,7 @@ declare const conversationIdString: unique symbol
 type ConversationIdString = string & { [conversationIdString]?: never }
 
 interface SingleConversationsSelectProps
-  extends ActionProps,
-    AutoFocusibleProps,
-    ConfirmableProps,
-    SingleSelectableProps,
-    FilterProps {
+  extends ActionProps, AutoFocusibleProps, ConfirmableProps, SingleSelectableProps, FilterProps {
   children?: never
 
   /**
@@ -50,15 +46,11 @@ interface SingleConversationsSelectProps
   value?: ConversationIdString | 'current'
 }
 
-interface MultiConversationsSelectProps
-  extends MultiSelectablePropsFrom<
-    SingleConversationsSelectProps,
-    'initialConversation' | 'value'
-  > {
-  initialConversation?:
-    | ConversationIdString
-    | 'current'
-    | ConversationIdString[]
+interface MultiConversationsSelectProps extends MultiSelectablePropsFrom<
+  SingleConversationsSelectProps,
+  'initialConversation' | 'value'
+> {
+  initialConversation?: ConversationIdString | 'current' | ConversationIdString[]
 
   value?: ConversationIdString | 'current' | ConversationIdString[]
 }
@@ -82,62 +74,49 @@ export type ConversationsSelectProps = DistributedProps<
  * @return The partial JSON of a block element for selecting from conversations,
  *   or `input` layout block with it
  */
-export const ConversationsSelect: BuiltInComponent<ConversationsSelectProps> =
-  createComponent<
-    ConversationsSelectProps,
-    | SlackConversationsSelectElement
-    | MultiConversationsSelectElement
-    | InputBlock
-  >('ConversationsSelect', (props) => {
-    const action_id = props.actionId || props.name
-    const filterComposition = filter(props)
-    const placeholder =
-      props.placeholder !== undefined ? plainText(props.placeholder) : undefined
+export const ConversationsSelect: BuiltInComponent<ConversationsSelectProps> = createComponent<
+  ConversationsSelectProps,
+  SlackConversationsSelectElement | MultiConversationsSelectElement | InputBlock
+>('ConversationsSelect', (props) => {
+  const action_id = props.actionId || props.name
+  const filterComposition = filter(props)
+  const placeholder = props.placeholder !== undefined ? plainText(props.placeholder) : undefined
 
-    const initialConversationsSet = new Set<string>(
-      ((v) => ([] as string[]).concat(v ?? []))(
-        props.initialConversation || props.value,
-      ),
-    )
+  const initialConversationsSet = new Set<string>(
+    ((v) => ([] as string[]).concat(v ?? []))(props.initialConversation || props.value),
+  )
 
-    const defaultToCurrentConversation =
-      initialConversationsSet.delete('current') || undefined
+  const defaultToCurrentConversation = initialConversationsSet.delete('current') || undefined
 
-    const initialConversations =
-      initialConversationsSet.size > 0
-        ? [...initialConversationsSet.values()]
-        : undefined
+  const initialConversations =
+    initialConversationsSet.size > 0 ? [...initialConversationsSet.values()] : undefined
 
-    return wrapInInput<
-      SlackConversationsSelectElement | MultiConversationsSelectElement
-    >(
-      props.multiple
-        ? {
-            type: 'multi_conversations_select',
-            action_id,
-            placeholder,
-            initial_conversations: initialConversations,
-            filter: filterComposition,
-            default_to_current_conversation: defaultToCurrentConversation,
-            max_selected_items: coerceToInteger(props.maxSelectedItems),
-            confirm: props.confirm as any,
-            focus_on_load: focusOnLoadFromProps(props),
-          }
-        : {
-            type: 'conversations_select',
-            action_id: props.actionId || props.name,
-            placeholder,
-            initial_conversation: initialConversations?.[0],
-            filter: filterComposition,
-            default_to_current_conversation: defaultToCurrentConversation,
-            response_url_enabled:
-              props.responseUrlEnabled !== undefined
-                ? !!props.responseUrlEnabled
-                : undefined,
-            confirm: props.confirm as any,
-            focus_on_load: focusOnLoadFromProps(props),
-          },
-      props,
-      ConversationsSelect,
-    )
-  })
+  return wrapInInput<SlackConversationsSelectElement | MultiConversationsSelectElement>(
+    props.multiple
+      ? {
+          type: 'multi_conversations_select',
+          action_id,
+          placeholder,
+          initial_conversations: initialConversations,
+          filter: filterComposition,
+          default_to_current_conversation: defaultToCurrentConversation,
+          max_selected_items: coerceToInteger(props.maxSelectedItems),
+          confirm: props.confirm as any,
+          focus_on_load: focusOnLoadFromProps(props),
+        }
+      : {
+          type: 'conversations_select',
+          action_id: props.actionId || props.name,
+          placeholder,
+          initial_conversation: initialConversations?.[0],
+          filter: filterComposition,
+          default_to_current_conversation: defaultToCurrentConversation,
+          response_url_enabled:
+            props.responseUrlEnabled !== undefined ? !!props.responseUrlEnabled : undefined,
+          confirm: props.confirm as any,
+          focus_on_load: focusOnLoadFromProps(props),
+        },
+    props,
+    ConversationsSelect,
+  )
+})

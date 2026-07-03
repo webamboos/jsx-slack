@@ -2,12 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import type { JSXSlack } from './jsx'
 
-const {
-  defineProperty,
-  create: objectCreate,
-  keys: objectKeys,
-  freeze: objectFreeze,
-} = Object
+const { defineProperty, create: objectCreate, keys: objectKeys, freeze: objectFreeze } = Object
 
 const jsxSlackObjKey = '$$jsxslack' as const
 const jsxSlackComponentObjKey = `${jsxSlackObjKey}Component` as const
@@ -45,8 +40,7 @@ export const createElementInternal = <P extends {} = {}>(
 
       if (!children.length) {
         // Fallback to children props
-        let { children: propsChildren } =
-          (props as JSXSlack.PropsWithChildren<P>) || {}
+        let { children: propsChildren } = (props as JSXSlack.PropsWithChildren<P>) || {}
         if (propsChildren !== undefined) {
           metaChildren = ([] as JSXSlack.ChildElement[]).concat(propsChildren)
         }
@@ -108,18 +102,11 @@ export const FragmentInternal = createComponent<
  * @return `true` if the passed object was a jsx-slack component, otherwise
  *   `false`.
  */
-export const isValidComponent = <T extends {} = any>(
-  fn: unknown,
-): fn is BuiltInComponent<T> =>
-  typeof fn === 'function' &&
-  !!Object.prototype.hasOwnProperty.call(fn, jsxSlackComponentObjKey)
+export const isValidComponent = <T extends {} = any>(fn: unknown): fn is BuiltInComponent<T> =>
+  typeof fn === 'function' && !!Object.prototype.hasOwnProperty.call(fn, jsxSlackComponentObjKey)
 
-export const isValidElementInternal = (
-  obj: unknown,
-): obj is JSXSlack.JSX.Element =>
-  typeof obj === 'object' &&
-  !!obj &&
-  !!Object.prototype.hasOwnProperty.call(obj, jsxSlackObjKey)
+export const isValidElementInternal = (obj: unknown): obj is JSXSlack.JSX.Element =>
+  typeof obj === 'object' && !!obj && !!Object.prototype.hasOwnProperty.call(obj, jsxSlackObjKey)
 
 /**
  * Verify the passed object is a jsx-slack element created from built-in
@@ -135,8 +122,7 @@ export const isValidElementFromComponent = (
   obj: unknown,
   component?: string | JSXSlack.FunctionComponent<any>,
 ): obj is JSXSlack.JSX.Element => {
-  const valid =
-    isValidElementInternal(obj) && isValidComponent(obj[jsxSlackObjKey].type)
+  const valid = isValidElementInternal(obj) && isValidComponent(obj[jsxSlackObjKey].type)
 
   if (!valid) return false
 

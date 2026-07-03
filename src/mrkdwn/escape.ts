@@ -29,8 +29,7 @@ export const escapeReplacers = {
     partial
       .replace(/`+/g, generateReplacerForEscape('\u02cb'))
       .replace(/｀+/g, generateReplacerForEscape('\u02cb')),
-  strikethrough: (partial: string) =>
-    partial.replace(/~+/g, generateReplacerForEscape('\u223c')),
+  strikethrough: (partial: string) => partial.replace(/~+/g, generateReplacerForEscape('\u223c')),
 } as const
 
 const escapeCharsDefaultReplacer = (partial: string) =>
@@ -42,17 +41,13 @@ export const escapeChars = (
 ) =>
   mrkdwn
     .split(preventEscapeRegex)
-    .reduce(
-      (acc, str, i) => [...acc, i % 2 ? str : replacer(str)],
-      [] as string[],
-    )
+    .reduce((acc, str, i) => [...acc, i % 2 ? str : replacer(str)], [] as string[])
     .join('')
 
 export const escapeEntity = (str: string) =>
   str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
-export const escapeURL = (url: string) =>
-  escapeEntity(url).replace(/\|+/g, encodeURI)
+export const escapeURL = (url: string) => escapeEntity(url).replace(/\|+/g, encodeURI)
 
 const replaceUnmatchedString = (
   str: string,
@@ -66,16 +61,13 @@ const replaceUnmatchedString = (
 
 export const escapeEverythingContents = (str: string) =>
   replaceUnmatchedString(str, /(<[\s\S]*?>)/, (s) =>
-    replaceUnmatchedString(s, /(&\w+;)/, (ss) =>
-      [...ss].map((x) => `&#${x.codePointAt(0)};`),
-    ),
+    replaceUnmatchedString(s, /(&\w+;)/, (ss) => [...ss].map((x) => `&#${x.codePointAt(0)};`)),
   )
 
 export const decodeEntity = (obj: any) => {
   if (typeof obj === 'string')
     return obj.replace(/&(amp|gt|lt|quot|#\d+);/g, (_, entity) => {
-      if (entity.startsWith('#'))
-        return String.fromCodePoint(Number.parseInt(entity.slice(1), 10))
+      if (entity.startsWith('#')) return String.fromCodePoint(Number.parseInt(entity.slice(1), 10))
 
       return { amp: '&', gt: '>', lt: '<', quot: '"' }[entity]
     })

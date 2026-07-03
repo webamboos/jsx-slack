@@ -1,4 +1,5 @@
 /** @jsx JSXSlack.h */
+import { vi } from 'vitest'
 import { InputBlock, View } from '@slack/types'
 import {
   Actions,
@@ -126,13 +127,7 @@ describe('Input components', () => {
       expect(
         JSXSlack(
           <Modal title="test">
-            <Input
-              actionId="action"
-              blockId="foo"
-              hint="bar"
-              label="Input"
-              autoFocus
-            />
+            <Input actionId="action" blockId="foo" hint="bar" label="Input" autoFocus />
           </Modal>,
         ).blocks,
       ).toStrictEqual([expected]))
@@ -141,14 +136,7 @@ describe('Input components', () => {
       expect(
         JSXSlack(
           <Modal title="test">
-            <input
-              type="text"
-              id="foo"
-              label="Input"
-              name="action"
-              title="bar"
-              autofocus
-            />
+            <input type="text" id="foo" label="Input" name="action" title="bar" autofocus />
           </Modal>,
         ).blocks,
       ).toStrictEqual([expected]))
@@ -156,10 +144,7 @@ describe('Input components', () => {
     describe('dispatchAction prop', () => {
       it('accepts dispatchAction prop as boolean', () => {
         expect(<Input label="input" />).not.toHaveProperty('dispatch_action')
-        expect(<Input label="input" dispatchAction />).toHaveProperty(
-          'dispatch_action',
-          true,
-        )
+        expect(<Input label="input" dispatchAction />).toHaveProperty('dispatch_action', true)
         expect(<Input label="input" dispatchAction />).not.toHaveProperty(
           'element.dispatch_action_config',
         )
@@ -170,9 +155,7 @@ describe('Input components', () => {
       })
 
       it('sets dispatch action config composition object if defined dispatchAction prop as specific string', () => {
-        const daOCE = (
-          <Input label="input" dispatchAction="onCharacterEntered" />
-        )
+        const daOCE = <Input label="input" dispatchAction="onCharacterEntered" />
         expect(daOCE).toHaveProperty('dispatch_action', true)
         expect(daOCE).toHaveProperty('element.dispatch_action_config', {
           trigger_actions_on: ['on_character_entered'],
@@ -185,10 +168,7 @@ describe('Input components', () => {
         })
 
         const daArray = (
-          <Input
-            label="input"
-            dispatchAction={['onEnterPressed', 'onCharacterEntered']}
-          />
+          <Input label="input" dispatchAction={['onEnterPressed', 'onCharacterEntered']} />
         )
         expect(daArray).toHaveProperty('dispatch_action', true)
         expect(daArray).toHaveProperty('element.dispatch_action_config', {
@@ -202,13 +182,10 @@ describe('Input components', () => {
           />
         )
         expect(daSpaceSeparated).toHaveProperty('dispatch_action', true)
-        expect(daSpaceSeparated).toHaveProperty(
-          'element.dispatch_action_config',
-          {
-            // Remove duplicated / unknown actions
-            trigger_actions_on: ['on_character_entered', 'on_enter_pressed'],
-          },
-        )
+        expect(daSpaceSeparated).toHaveProperty('element.dispatch_action_config', {
+          // Remove duplicated / unknown actions
+          trigger_actions_on: ['on_character_entered', 'on_enter_pressed'],
+        })
       })
 
       it('does not set dispatch action config composition but enabled dispatch_action if passed unknown', () => {
@@ -408,9 +385,7 @@ describe('Input components', () => {
     })
 
     it('can customize private metadata transformer for assigned hidden values', () => {
-      const transformer = jest.fn(
-        (hidden) => hidden && new URLSearchParams(hidden).toString(),
-      )
+      const transformer = vi.fn((hidden) => hidden && new URLSearchParams(hidden).toString())
 
       expect(
         JSXSlack(
@@ -501,43 +476,32 @@ describe('Input components', () => {
 
     describe('dispatchAction prop', () => {
       it('accepts dispatchAction prop as boolean', () => {
-        expect(<Textarea label="textarea" />).not.toHaveProperty(
-          'dispatch_action',
-        )
-        expect(<Textarea label="textarea" dispatchAction />).toHaveProperty(
-          'dispatch_action',
-          true,
-        )
+        expect(<Textarea label="textarea" />).not.toHaveProperty('dispatch_action')
+        expect(<Textarea label="textarea" dispatchAction />).toHaveProperty('dispatch_action', true)
         expect(<Textarea label="textarea" dispatchAction />).not.toHaveProperty(
           'element.dispatch_action_config',
         )
-        expect(
-          <Textarea label="textarea" dispatchAction={false} />,
-        ).toHaveProperty('dispatch_action', false)
+        expect(<Textarea label="textarea" dispatchAction={false} />).toHaveProperty(
+          'dispatch_action',
+          false,
+        )
       })
 
       it('sets dispatch action config composition object if defined dispatchAction prop as specific string', () => {
-        const daOCE = (
-          <Textarea label="textarea" dispatchAction="onCharacterEntered" />
-        )
+        const daOCE = <Textarea label="textarea" dispatchAction="onCharacterEntered" />
         expect(daOCE).toHaveProperty('dispatch_action', true)
         expect(daOCE).toHaveProperty('element.dispatch_action_config', {
           trigger_actions_on: ['on_character_entered'],
         })
 
-        const daOEP = (
-          <Textarea label="textarea" dispatchAction="onEnterPressed" />
-        )
+        const daOEP = <Textarea label="textarea" dispatchAction="onEnterPressed" />
         expect(daOEP).toHaveProperty('dispatch_action', true)
         expect(daOEP).toHaveProperty('element.dispatch_action_config', {
           trigger_actions_on: ['on_enter_pressed'],
         })
 
         const daArray = (
-          <Textarea
-            label="textarea"
-            dispatchAction={['onEnterPressed', 'onCharacterEntered']}
-          />
+          <Textarea label="textarea" dispatchAction={['onEnterPressed', 'onCharacterEntered']} />
         )
         expect(daArray).toHaveProperty('dispatch_action', true)
         expect(daArray).toHaveProperty('element.dispatch_action_config', {
@@ -551,13 +515,10 @@ describe('Input components', () => {
           />
         )
         expect(daSpaceSeparated).toHaveProperty('dispatch_action', true)
-        expect(daSpaceSeparated).toHaveProperty(
-          'element.dispatch_action_config',
-          {
-            // Remove duplicated / unknown actions
-            trigger_actions_on: ['on_character_entered', 'on_enter_pressed'],
-          },
-        )
+        expect(daSpaceSeparated).toHaveProperty('element.dispatch_action_config', {
+          // Remove duplicated / unknown actions
+          trigger_actions_on: ['on_character_entered', 'on_enter_pressed'],
+        })
       })
 
       it('does not set dispatch action config composition but enabled dispatch_action if passed unknown', () => {
@@ -606,11 +567,7 @@ describe('Input components', () => {
     it('does not add response_url_enabled field when multiple prop is enable', () => {
       const { blocks } = JSXSlack(
         <Modal title="test">
-          <InvalidConversationsSelect
-            label="multiple"
-            multiple
-            responseUrlEnabled
-          />
+          <InvalidConversationsSelect label="multiple" multiple responseUrlEnabled />
         </Modal>,
       )
 

@@ -79,8 +79,7 @@ export const Checkbox = createComponent<CheckboxProps, CheckboxOption>(
     if (description !== undefined)
       opt.description = mrkdwn(description, { verbatim: opt.text.verbatim })
 
-    if (checked !== undefined)
-      Object.defineProperty(opt, checkboxCheckedSymbol, { value: checked })
+    if (checked !== undefined) Object.defineProperty(opt, checkboxCheckedSymbol, { value: checked })
 
     return opt
   },

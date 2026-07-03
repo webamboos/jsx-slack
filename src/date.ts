@@ -13,15 +13,7 @@ const months = [
   'December',
 ]
 
-const days = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-]
+const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
 const ordinals = ['th', 'st', 'nd', 'rd']
 
@@ -83,20 +75,11 @@ export default function formatDate(date: Date, format: string) {
       return `${y}-${m}-${d}`
     })
     .replace(/{date_pretty}/g, (_, i) => prettifiedDate(i === 0) || '{date}')
-    .replace(
-      /{date_short_pretty}/g,
-      (_, i) => prettifiedDate(i === 0) || '{date_short}',
-    )
-    .replace(
-      /{date_long_pretty}/g,
-      (_, i) => prettifiedDate(i === 0) || '{date_long}',
-    )
+    .replace(/{date_short_pretty}/g, (_, i) => prettifiedDate(i === 0) || '{date_short}')
+    .replace(/{date_long_pretty}/g, (_, i) => prettifiedDate(i === 0) || '{date_long}')
     .replace(/{date}/g, () => formattedDate())
     .replace(/{date_short}/g, () => formattedDate(true))
-    .replace(
-      /{date_long}/g,
-      () => `${days[date.getUTCDay()]}, ${formattedDate()}`,
-    )
+    .replace(/{date_long}/g, () => `${days[date.getUTCDay()]}, ${formattedDate()}`)
     .replace(/{time}/g, () => formattedTime())
     .replace(/{time_secs}/g, () => formattedTime(true))
 }

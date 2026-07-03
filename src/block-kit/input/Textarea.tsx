@@ -1,10 +1,5 @@
-/** @jsx createElementInternal */
 import { InputBlock, PlainTextInput as SlackPlainTextInput } from '@slack/types'
-import {
-  cleanMeta,
-  createComponent,
-  createElementInternal,
-} from '../../jsx-internals'
+import { cleanMeta, createComponent, createElementInternal } from '../../jsx-internals'
 import { coerceToInteger } from '../../utils'
 import { inputDispatchActionConfig } from '../composition/utils'
 import { PlainTextInput } from '../elements/PlainTextInput'
@@ -35,29 +30,24 @@ export interface TextareaProps extends Omit<InputTextProps, 'type'> {}
  * @return The partial JSON for `input` layout block with a multiline plain-text
  *   input
  */
-export const Textarea = createComponent<TextareaProps, InputBlock>(
-  'Textarea',
-  (props): any =>
-    wrapInInput(
-      cleanMeta(
-        <PlainTextInput
-          actionId={props.actionId || props.name}
-          initialValue={props.value}
-          maxLength={coerceToInteger(props.maxLength)}
-          minLength={coerceToInteger(props.minLength)}
-          placeholder={props.placeholder}
-          multiline={true}
-          dispatchActionConfig={inputDispatchActionConfig(props)}
-          focusOnLoad={focusOnLoadFromProps(props)}
-        />,
-      ) as SlackPlainTextInput,
-      {
-        ...props,
-        dispatchAction:
-          props.dispatchAction === undefined
-            ? undefined
-            : !!props.dispatchAction,
-      },
-      Textarea,
-    ),
+export const Textarea = createComponent<TextareaProps, InputBlock>('Textarea', (props): any =>
+  wrapInInput(
+    cleanMeta(
+      <PlainTextInput
+        actionId={props.actionId || props.name}
+        initialValue={props.value}
+        maxLength={coerceToInteger(props.maxLength)}
+        minLength={coerceToInteger(props.minLength)}
+        placeholder={props.placeholder}
+        multiline={true}
+        dispatchActionConfig={inputDispatchActionConfig(props)}
+        focusOnLoad={focusOnLoadFromProps(props)}
+      />,
+    ) as SlackPlainTextInput,
+    {
+      ...props,
+      dispatchAction: props.dispatchAction === undefined ? undefined : !!props.dispatchAction,
+    },
+    Textarea,
+  ),
 )

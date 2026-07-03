@@ -5,10 +5,7 @@ import { plainText } from '../composition/utils'
 import { InputComponentProps, wrapInInput } from '../layout/Input'
 import { ActionProps, AutoFocusibleProps, focusOnLoadFromProps } from './utils'
 
-interface TimePickerBaseProps
-  extends ActionProps,
-    AutoFocusibleProps,
-    ConfirmableProps {
+interface TimePickerBaseProps extends ActionProps, AutoFocusibleProps, ConfirmableProps {
   children?: never
 
   /** The placeholder text shown in empty time picker field. */
@@ -75,10 +72,7 @@ export const TimePicker: BuiltInComponent<TimePickerProps> = createComponent<
     {
       type: 'timepicker',
       action_id: props.actionId || props.name,
-      placeholder:
-        props.placeholder !== undefined
-          ? plainText(props.placeholder)
-          : undefined,
+      placeholder: props.placeholder !== undefined ? plainText(props.placeholder) : undefined,
       initial_time: time,
       confirm: props.confirm as any,
       focus_on_load: focusOnLoadFromProps(props),

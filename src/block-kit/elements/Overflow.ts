@@ -65,44 +65,36 @@ export const OverflowItem = createComponent<OverflowItemProps, PlainTextOption>(
  *
  * @return The partial JSON of a block element for overflow menu
  */
-export const Overflow = createComponent<OverflowProps, OverflowElement>(
-  'Overflow',
-  (props) => {
-    const options = JSXSlack.Children.toArray(props.children).filter(
-      (option): option is PlainTextOption => {
-        if (!JSXSlack.isValidElement(option)) return false
+export const Overflow = createComponent<OverflowProps, OverflowElement>('Overflow', (props) => {
+  const options = JSXSlack.Children.toArray(props.children).filter(
+    (option): option is PlainTextOption => {
+      if (!JSXSlack.isValidElement(option)) return false
 
-        if (option.$$jsxslack.type !== OverflowItem) {
-          const tag = resolveTagName(option)
-          throw new JSXSlackError(
-            `<Overflow> must contain only <OverflowItem>${
-              tag ? ` but it is included ${tag}` : ''
-            }.`,
-            option,
-          )
-        }
+      if (option.$$jsxslack.type !== OverflowItem) {
+        const tag = resolveTagName(option)
+        throw new JSXSlackError(
+          `<Overflow> must contain only <OverflowItem>${tag ? ` but it is included ${tag}` : ''}.`,
+          option,
+        )
+      }
 
-        return true
-      },
+      return true
+    },
+  )
+
+  if (options.length < 1)
+    throw new JSXSlackError('<Overflow> must contain least of 1 <OverflowItem>.', props['__source'])
+
+  if (options.length > 5)
+    throw new JSXSlackError(
+      `<Overflow> must contain up to 5 <OverflowItem> elements but there are ${options.length} elements.`,
+      props['__source'],
     )
 
-    if (options.length < 1)
-      throw new JSXSlackError(
-        '<Overflow> must contain least of 1 <OverflowItem>.',
-        props['__source'],
-      )
-
-    if (options.length > 5)
-      throw new JSXSlackError(
-        `<Overflow> must contain up to 5 <OverflowItem> elements but there are ${options.length} elements.`,
-        props['__source'],
-      )
-
-    return {
-      type: 'overflow',
-      action_id: props.actionId || props.name,
-      options,
-      confirm: props.confirm as any,
-    }
-  },
-)
+  return {
+    type: 'overflow',
+    action_id: props.actionId || props.name,
+    options,
+    confirm: props.confirm as any,
+  }
+})

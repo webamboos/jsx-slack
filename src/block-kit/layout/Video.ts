@@ -67,9 +67,7 @@ interface VideoPropsInternal extends LayoutBlockProps {
 }
 
 type SelectiveRequired<T, K extends keyof T> = T & Required<Pick<T, K>>
-type RequiredOneOf<T, K extends keyof T> = K extends never
-  ? never
-  : SelectiveRequired<T, K>
+type RequiredOneOf<T, K extends keyof T> = K extends never ? never : SelectiveRequired<T, K>
 
 export type VideoProps = RequiredOneOf<
   RequiredOneOf<VideoPropsInternal, 'src' | 'videoUrl'>,
@@ -85,20 +83,16 @@ export type VideoProps = RequiredOneOf<
  *
  * @return The partial JSON for `video` layout block
  */
-export const Video = createComponent<VideoProps, VideoBlock>(
-  'Video',
-  (props) => ({
-    type: 'video',
-    block_id: props.blockId || props.id,
-    video_url: (props.videoUrl || props.src) as string,
-    alt_text: props.alt,
-    thumbnail_url: (props.thumbnailUrl || props.poster) as string,
-    title: plainText(props.title),
-    title_url: props.titleUrl,
-    author_name: props.authorName,
-    provider_name: props.providerName,
-    provider_icon_url: props.providerIconUrl,
-    description:
-      props.description != null ? plainText(props.description) : undefined,
-  }),
-)
+export const Video = createComponent<VideoProps, VideoBlock>('Video', (props) => ({
+  type: 'video',
+  block_id: props.blockId || props.id,
+  video_url: (props.videoUrl || props.src) as string,
+  alt_text: props.alt,
+  thumbnail_url: (props.thumbnailUrl || props.poster) as string,
+  title: plainText(props.title),
+  title_url: props.titleUrl,
+  author_name: props.authorName,
+  provider_name: props.providerName,
+  provider_icon_url: props.providerIconUrl,
+  description: props.description != null ? plainText(props.description) : undefined,
+}))

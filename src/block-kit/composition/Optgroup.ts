@@ -39,9 +39,7 @@ export const Optgroup = createComponent<OptgroupProps, OptgroupComposition>(
         if (opt.$$jsxslack.type !== Option) {
           const tag = resolveTagName(option)
           throw new JSXSlackError(
-            `<Optgroup> must contain only <Option>${
-              tag ? ` but it is included ${tag}` : ''
-            }.`,
+            `<Optgroup> must contain only <Option>${tag ? ` but it is included ${tag}` : ''}.`,
             option,
           )
         }

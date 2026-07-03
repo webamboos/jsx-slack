@@ -49,10 +49,7 @@ describe('Built-in components', () => {
         JSXSlack(
           <Blocks>
             <Section>
-              <Escape>
-                _:arrow_down: :custom_emoji: :カスタム＿絵文字:
-                :커스텀_이모티콘:_
-              </Escape>
+              <Escape>_:arrow_down: :custom_emoji: :カスタム＿絵文字: :커스텀_이모티콘:_</Escape>
             </Section>
           </Blocks>,
         ),
@@ -109,9 +106,7 @@ describe('Built-in components', () => {
 
   describe('<Fragment> component', () => {
     it('allows grouping multiple components for custom block', () => {
-      const CustomBlock: JSXSlack.FC<{ children: JSXSlack.ChildElements }> = ({
-        children,
-      }) => (
+      const CustomBlock: JSXSlack.FC<{ children: JSXSlack.ChildElements }> = ({ children }) => (
         <Fragment>
           <Divider />
           <Section>{children}</Section>

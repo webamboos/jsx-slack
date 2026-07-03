@@ -3,12 +3,7 @@ import { JSXSlackError } from '../error'
 import { JSXSlack } from '../jsx'
 import { createComponent } from '../jsx-internals'
 import { detectSpecialLink } from '../utils'
-import {
-  escapeChars,
-  escapeEntity,
-  escapeEverythingContents,
-  escapeReplacers,
-} from './escape'
+import { escapeChars, escapeEntity, escapeEverythingContents, escapeReplacers } from './escape'
 
 const buildAttr = (props: { [key: string]: any }, escapeEntities = true) => {
   let attr = ''
@@ -16,9 +11,7 @@ const buildAttr = (props: { [key: string]: any }, escapeEntities = true) => {
   for (const prop of Object.keys(props)) {
     if (
       props[prop] != null &&
-      ['number', 'bigint', 'boolean', 'string', 'symbol'].includes(
-        typeof props[prop],
-      )
+      ['number', 'bigint', 'boolean', 'string', 'symbol'].includes(typeof props[prop])
     ) {
       let attrBase = props[prop].toString()
       if (escapeEntities) attrBase = escapeEntity(attrBase)
@@ -39,8 +32,7 @@ const stringifyHtml = (
   const text = () => children.join('')
   const isChild = (...elms: string[]) =>
     parents.length > 0 && elms.some((e) => e === parents[parents.length - 1])
-  const isDescendant = (...elms: string[]) =>
-    elms.some((e) => parents.includes(e))
+  const isDescendant = (...elms: string[]) => elms.some((e) => parents.includes(e))
 
   if (name === 'br') return '<br />'
   if (isChild('pre', 'code') && !['a', 'time'].includes(name)) return text()
@@ -74,9 +66,7 @@ const stringifyHtml = (
       if (isDescendant('ul', 'ol', 'time')) return text()
 
       // Encode everything to preserve whitespaces (except tags such as <a> and <time>)
-      return `<pre>${escapeEverythingContents(
-        text().replace(/`{3}/g, '``\u02cb'),
-      )}</pre>`
+      return `<pre>${escapeEverythingContents(text().replace(/`{3}/g, '``\u02cb'))}</pre>`
     }
     case 'a': {
       if (isDescendant('a', 'time')) return text()
@@ -84,17 +74,14 @@ const stringifyHtml = (
       let content = text()
 
       // Prevent vanishing special link used as void element
-      if (!content && props.href && detectSpecialLink(props.href))
-        content = 'specialLink'
+      if (!content && props.href && detectSpecialLink(props.href)) content = 'specialLink'
 
       return `<a${buildAttr(props)}>${content}</a>`
     }
     case 'time': {
       const dateTimeStr = props.dateTime ?? props.datetime
       const dateInt = Number.parseInt(dateTimeStr, 10)
-      const date = new Date(
-        Number.isNaN(dateInt) ? dateTimeStr : dateInt * 1000,
-      )
+      const date = new Date(Number.isNaN(dateInt) ? dateTimeStr : dateInt * 1000)
       const datetime = Math.floor(date.getTime() / 1000)
       const format = text().replace(/\|/g, '\u01c0')
 
@@ -106,9 +93,7 @@ const stringifyHtml = (
         : buildAttr({ 'data-fallback': formatDate(date, format) }, false)
 
       // Encode everything of the format text to preserve from unexpected escape
-      return `<time${datetimeAttr}${fallbackAttr}>${escapeEverythingContents(
-        format,
-      )}</time>`
+      return `<time${datetimeAttr}${fallbackAttr}>${escapeEverythingContents(format)}</time>`
     }
     case 'small':
     case 'span':
@@ -118,10 +103,7 @@ const stringifyHtml = (
     case 'li':
       return `<${name}${buildAttr(props)}>${text()}</${name}>`
     default:
-      throw new JSXSlackError(
-        `Unknown HTML-like element: ${name}`,
-        props.__source,
-      )
+      throw new JSXSlackError(`Unknown HTML-like element: ${name}`, props.__source)
   }
 }
 
@@ -144,25 +126,20 @@ export const parseJSX = (
   parents: string[],
   escaped = false,
 ): string[] =>
-  JSXSlack.Children.map(children, (c) => c)?.reduce(
-    (reduced: string[], child) => {
-      if (JSXSlack.isValidElement(child)) {
-        const { type, props, children: nodeChildren } = child.$$jsxslack
+  JSXSlack.Children.map(children, (c) => c)?.reduce((reduced: string[], child) => {
+    if (JSXSlack.isValidElement(child)) {
+      const { type, props, children: nodeChildren } = child.$$jsxslack
 
-        if (typeof type === 'string') {
-          const digged = parseJSX(nodeChildren, [...parents, type])
-          return [...reduced, stringifyHtml(type, props || {}, digged, parents)]
-        }
-
-        // Component except <Escape> just ignores and digs into children
-        const shouldEscape = !escaped && type === Escape
-        const digged = parseJSX(nodeChildren, parents, shouldEscape)
-
-        return reduced.concat(
-          shouldEscape ? escapeChars(digged.join('')) : digged,
-        )
+      if (typeof type === 'string') {
+        const digged = parseJSX(nodeChildren, [...parents, type])
+        return [...reduced, stringifyHtml(type, props || {}, digged, parents)]
       }
-      return [...reduced, escapeEntity(child.toString())]
-    },
-    [],
-  ) || []
+
+      // Component except <Escape> just ignores and digs into children
+      const shouldEscape = !escaped && type === Escape
+      const digged = parseJSX(nodeChildren, parents, shouldEscape)
+
+      return reduced.concat(shouldEscape ? escapeChars(digged.join('')) : digged)
+    }
+    return [...reduced, escapeEntity(child.toString())]
+  }, []) || []

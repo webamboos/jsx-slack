@@ -2,11 +2,7 @@ import { JSXSlackError } from '../../error'
 import { JSXSlack } from '../../jsx'
 import { BuiltInComponent, createComponent } from '../../jsx-internals'
 import { Optgroup, OptgroupComposition } from '../composition/Optgroup'
-import {
-  Option,
-  OptionComposition,
-  optionSelectedSymbol,
-} from '../composition/Option'
+import { Option, OptionComposition, optionSelectedSymbol } from '../composition/Option'
 import { alias, resolveTagName } from '../utils'
 
 export const selectFragmentSelectedOptionsSymbol = Symbol(
@@ -41,8 +37,7 @@ export const SelectFragmentInternal = createComponent<
       let opt: any = child
 
       if (child.$$jsxslack.type === 'option') opt = alias(child, Option, false)
-      if (child.$$jsxslack.type === 'optgroup')
-        opt = alias(child, Optgroup, false)
+      if (child.$$jsxslack.type === 'optgroup') opt = alias(child, Optgroup, false)
 
       const { type } = opt.$$jsxslack
 
@@ -77,11 +72,9 @@ export const SelectFragmentInternal = createComponent<
   if (count > 0) {
     const ret = mode === Optgroup ? { option_groups: opts } : { options: opts }
 
-    return Object.defineProperty(
-      ret as any,
-      selectFragmentSelectedOptionsSymbol,
-      { value: selected },
-    )
+    return Object.defineProperty(ret as any, selectFragmentSelectedOptionsSymbol, {
+      value: selected,
+    })
   }
 
   return { options: [] }
@@ -113,5 +106,4 @@ export const SelectFragmentInternal = createComponent<
  *
  * @return The JSON for the external data source
  */
-export const SelectFragment: BuiltInComponent<SelectFragmentProps> =
-  SelectFragmentInternal
+export const SelectFragment: BuiltInComponent<SelectFragmentProps> = SelectFragmentInternal

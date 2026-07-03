@@ -1,8 +1,4 @@
-import {
-  UsersSelect as SlackUsersSelect,
-  MultiUsersSelect,
-  InputBlock,
-} from '@slack/types'
+import { UsersSelect as SlackUsersSelect, MultiUsersSelect, InputBlock } from '@slack/types'
 import { BuiltInComponent, createComponent } from '../../jsx-internals'
 import { coerceToInteger } from '../../utils'
 import { ConfirmableProps } from '../composition/Confirm'
@@ -17,10 +13,7 @@ import {
 } from './utils'
 
 interface SingleUsersSelectProps
-  extends ActionProps,
-    AutoFocusibleProps,
-    ConfirmableProps,
-    SingleSelectableProps {
+  extends ActionProps, AutoFocusibleProps, ConfirmableProps, SingleSelectableProps {
   children?: never
 
   /** A string of ID for the initially selected user. */
@@ -33,11 +26,10 @@ interface SingleUsersSelectProps
   value?: string
 }
 
-interface MultiUsersSelectProps
-  extends MultiSelectablePropsFrom<
-    SingleUsersSelectProps,
-    'initialUser' | 'value'
-  > {
+interface MultiUsersSelectProps extends MultiSelectablePropsFrom<
+  SingleUsersSelectProps,
+  'initialUser' | 'value'
+> {
   /** In multiple select, you can set multiple user IDs through array. */
   initialUser?: string | string[]
   value?: string | string[]
@@ -46,9 +38,7 @@ interface MultiUsersSelectProps
 type UsersSelectElement = SlackUsersSelect
 type MultiUsersSelectElement = MultiUsersSelect
 
-export type UsersSelectProps = InputComponentProps<
-  SingleUsersSelectProps | MultiUsersSelectProps
->
+export type UsersSelectProps = InputComponentProps<SingleUsersSelectProps | MultiUsersSelectProps>
 
 /**
  * The interactive component or input component for
@@ -66,8 +56,7 @@ export const UsersSelect: BuiltInComponent<UsersSelectProps> = createComponent<
   UsersSelectElement | MultiUsersSelectElement | InputBlock
 >('UsersSelect', (props) => {
   const action_id = props.actionId || props.name
-  const placeholder =
-    props.placeholder !== undefined ? plainText(props.placeholder) : undefined
+  const placeholder = props.placeholder !== undefined ? plainText(props.placeholder) : undefined
 
   return wrapInInput<UsersSelectElement | MultiUsersSelectElement>(
     props.multiple
@@ -75,8 +64,7 @@ export const UsersSelect: BuiltInComponent<UsersSelectProps> = createComponent<
           type: 'multi_users_select',
           action_id,
           placeholder,
-          initial_users: ((v) =>
-            v !== undefined ? ([] as string[]).concat(v) : undefined)(
+          initial_users: ((v) => (v !== undefined ? ([] as string[]).concat(v) : undefined))(
             props.initialUser || props.value,
           ),
           max_selected_items: coerceToInteger(props.maxSelectedItems),

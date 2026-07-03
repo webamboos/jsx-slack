@@ -14,6 +14,5 @@ export const Fragment = FragmentInternal
 export namespace JSX {
   export interface Element extends JSXSlack.JSX.Element {}
   export interface IntrinsicElements extends JSXSlack.JSX.IntrinsicElements {}
-  export interface ElementChildrenAttribute
-    extends JSXSlack.JSX.ElementChildrenAttribute {}
+  export interface ElementChildrenAttribute extends JSXSlack.JSX.ElementChildrenAttribute {}
 }

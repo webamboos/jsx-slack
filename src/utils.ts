@@ -22,20 +22,16 @@ const romanNumerals = {
 }
 
 export const detectSpecialLink = (href: string): SpecialLink | undefined => {
-  if (href === '@channel' || href === '@everyone' || href === '@here')
-    return href
+  if (href === '@channel' || href === '@everyone' || href === '@here') return href
 
   const matched = href.match(/^(#C|@[SUW])[A-Z0-9]{8,}$/)
 
-  if (matched)
-    return matched[1] === '#C' || matched[1] === '@S' ? matched[1] : '@UW'
+  if (matched) return matched[1] === '#C' || matched[1] === '@S' ? matched[1] : '@UW'
 
   return undefined
 }
 
-export const coerceToInteger = (
-  num: number | string | undefined,
-): number | undefined => {
+export const coerceToInteger = (num: number | string | undefined): number | undefined => {
   if (num === undefined) return undefined
 
   const coerced = Number.parseInt(num.toString(), 10)
@@ -49,8 +45,7 @@ export const coerceToString: {
   (value: string | number | bigint | undefined): string | undefined
 } = (value: string | number | bigint | undefined): any => {
   if (typeof value === 'string') return value
-  if (typeof value === 'number' || typeof value === 'bigint')
-    return value.toString()
+  if (typeof value === 'number' || typeof value === 'bigint') return value.toString()
 
   return undefined
 }

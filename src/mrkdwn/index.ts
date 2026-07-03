@@ -12,9 +12,13 @@ import { parseJSX } from './jsx'
 import parser from './parser'
 import stringifier from './stringifier'
 
+export function mrkdwn(children: JSXSlack.ChildElements) {
+  return htmlToMrkdwn(parseJSX(children, []).join(''))
+}
+
 const list = (state, node) => {
   const ordered = node.tagName === 'ol'
-  const orderedType = ordered ? node.properties.type ?? '1' : null
+  const orderedType = ordered ? (node.properties.type ?? '1') : null
   const start = ordered ? Number.parseInt(node.properties.start ?? 1, 10) : null
 
   // Mark implied list item
@@ -125,6 +129,3 @@ const htmlToMrkdwn = (html: string) =>
       },
     }),
   )
-
-export const mrkdwn = (children: JSXSlack.ChildElements) =>
-  htmlToMrkdwn(parseJSX(children, []).join(''))
