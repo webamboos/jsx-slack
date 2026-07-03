@@ -1,20 +1,6 @@
-<h1 align="center">
-  <a href="https://npm.im/jsx-slack">
-    <img src="https://raw.githubusercontent.com/yhatt/jsx-slack/HEAD/demo/public/logo.svg?sanitize=true" width="100" /><br />
-    jsx-slack
-  </a>
-</h1>
+# `jsx-slack`
 
-[![CircleCI](https://img.shields.io/circleci/project/github/yhatt/jsx-slack/main.svg?logo=circleci)][circleci]
-[![Codecov](https://img.shields.io/codecov/c/github/yhatt/jsx-slack/main.svg?logo=codecov)](https://codecov.io/gh/yhatt/jsx-slack)
-[![npm](https://img.shields.io/npm/v/jsx-slack.svg?logo=npm)][npm]
-[![LICENSE](https://img.shields.io/github/license/yhatt/jsx-slack.svg)][license]
-
-[circleci]: https://circleci.com/gh/yhatt/jsx-slack/
-[npm]: https://npm.im/jsx-slack
-[license]: ./LICENSE
-
-Build JSON object for [Slack][slack] [block kit] surfaces from [JSX].
+Build JSON object for [Slack][slack] [block kit] surfaces from [JSX]. This repository is a fork of the original [yhatt/jsx-slack](https://github.com/yhatt/jsx-slack) because it hasn't been maintained for the last couple of years and we wanted to add new features and remove CJS support. The whole readme and docs are not yet updated completely.
 
 [slack]: https://slack.com
 [jsx]: https://reactjs.org/docs/introducing-jsx.html
@@ -24,17 +10,18 @@ Build JSON object for [Slack][slack] [block kit] surfaces from [JSX].
 
 <p align="center">
   <a href="https://jsx-slack.netlify.app/">
-    <img src="https://raw.githubusercontent.com/yhatt/jsx-slack/HEAD/docs/jsx.png" width="550" />
+    <img src="./docs/jsx.png" width="550" />
   </a>
   <br />
   <a href="https://jsx-slack.netlify.app/#bkb:message">
-    <img src="https://raw.githubusercontent.com/yhatt/jsx-slack/HEAD/docs/slack-notification.png" width="532" />
+    <img src="./docs/slack-notification.png" width="532" />
   </a>
 </p>
 
-:point_right: **[Try our REPL demo](https://jsx-slack.netlify.app/)** in https://jsx-slack.netlify.app/.
-
 ### Features
+
+> [!warning]
+> This version of the librarys is ESM-only!
 
 - **[Block Kit as components](docs/jsx-components-for-block-kit.md)** - Build contents for any surfaces by composing components for Block Kit with JSX.
 - **[HTML-like formatting](docs/html-like-formatting.md)** - Keep a readability by using well-known elements.
@@ -57,37 +44,20 @@ jsx-slack would allow composing contents with simple and predictable HTML-like m
 
 ### [Node.js](https://nodejs.org/)
 
-We require Node.js >= 14. If you are using TypeScript, we also require TS >= 3.7.
+We require Node.js >= 22. If you are using TypeScript, we also require TS >= 3.7.
 
 ```bash
 # npm
-npm install --save jsx-slack
-```
-
-```bash
-# yarn
-yarn add jsx-slack
+pnpm install --save jsx-slack
 ```
 
 Now you can begin to write the code with [`jsxslack` template literal tag](#quick-start-template-literal). Furthermore, [setting up JSX transpiler](docs/how-to-setup-jsx-transpiler.md) would make the best development experience.
 
-### [Deno](https://deno.land/) ([Slack CLI](https://api.slack.com/future/tools/cli))
-
-We also have Deno support. If you are using Deno v1.28 and later, [you can import jsx-slack through npm directly](https://deno.land/manual/node/npm_specifiers).
-
-```typescript
-// `jsxslack` template literal tag
-import { jsxslack } from 'npm:jsx-slack@6'
-```
-
 ```typescript
 // JSX transpilation
-/** @jsxImportSource npm:jsx-slack@6 */
+/** @jsxImportSource @webamboos/jsx-slack */
 import { Blocks, Section } from 'npm:jsx-slack@6'
 ```
-
-> **Note**
-> Alternatively [you also can import jsx-slack through esm.sh CDN](https://deno.land/manual@v1.28.1/node/cdns#esmsh): [`https://esm.sh/jsx-slack@6`](https://esm.sh/jsx-slack@6)
 
 ## Usage
 
