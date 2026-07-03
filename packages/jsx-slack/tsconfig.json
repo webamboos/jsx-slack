@@ -1,21 +1,19 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "jsx-slack",
+    "jsxImportSource": "@webamboos/jsx-slack",
     "module": "es2022",
     "moduleResolution": "bundler",
     "noImplicitAny": false,
     "paths": {
-      "jsx-slack/*": ["./src/*"]
+      "@webamboos/jsx-slack/*": ["./*"],
     },
     "resolveJsonModule": true,
-    "rootDir": ".",
+    "rootDir": "./src",
     "sourceMap": true,
     "strict": true,
     "target": "es2022",
     "noErrorTruncation": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
   },
-  "include": ["src"]
 }

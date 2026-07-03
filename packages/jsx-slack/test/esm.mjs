@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { jsxslack, Fragment } from 'jsx-slack'
-import * as jsxDevRuntime from 'jsx-slack/jsx-dev-runtime'
-import * as jsxRuntime from 'jsx-slack/jsx-runtime'
+import { jsxslack, Fragment } from '@webamboos/jsx-slack'
+import * as jsxDevRuntime from '@webamboos/jsx-slack/jsx-dev-runtime'
+import * as jsxRuntime from '@webamboos/jsx-slack/jsx-runtime'
 
 describe('ES modules', () => {
   describe('jsxslack template literal tag', () => {

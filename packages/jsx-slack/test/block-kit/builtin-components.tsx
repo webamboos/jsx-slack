@@ -1,6 +1,6 @@
-/** @jsx JSXSlack.h */
-/** @jsxFrag JSXSlack.Fragment */
-import { StaticSelect } from '@slack/types'
+import { expect, beforeEach, describe, it } from "vitest";
+
+import { StaticSelect } from "@slack/types";
 import {
   Actions,
   Blocks,
@@ -15,13 +15,13 @@ import {
   Section,
   Select,
   SelectFragment,
-} from '../../src/index'
+} from "@webamboos/jsx-slack";
 
-beforeEach(() => JSXSlack.exactMode(false))
+beforeEach(() => JSXSlack.exactMode(false));
 
-describe('Built-in components', () => {
-  describe('<Escape> component', () => {
-    it('replaces special character in wrapped by <Escape> component', () =>
+describe("Built-in components", () => {
+  describe("<Escape> component", () => {
+    it("replaces special character in wrapped by <Escape> component", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -34,34 +34,37 @@ describe('Built-in components', () => {
       ).toStrictEqual([
         expect.objectContaining({
           text: expect.objectContaining({
-            text: '&gt; *bold* _italic_ ~strikethrough~ `code`',
+            text: "&gt; *bold* _italic_ ~strikethrough~ `code`",
           }),
         }),
         expect.objectContaining({
           text: expect.objectContaining({
-            text: '\u00ad&gt; <!date^00000000^{_}|*>bold<!date^00000000^{_}|*> <!date^00000000^{_}|_>italic<!date^00000000^{_}|_> <!date^00000000^{_}|~>strikethrough<!date^00000000^{_}|~> <!date^00000000^{_}|`>code<!date^00000000^{_}|`>',
+            text: "\u00ad&gt; <!date^00000000^{_}|*>bold<!date^00000000^{_}|*> <!date^00000000^{_}|_>italic<!date^00000000^{_}|_> <!date^00000000^{_}|~>strikethrough<!date^00000000^{_}|~> <!date^00000000^{_}|`>code<!date^00000000^{_}|`>",
           }),
         }),
-      ]))
+      ]));
 
-    it('ignores escaping underscore in valid emoji shorthand', () =>
+    it("ignores escaping underscore in valid emoji shorthand", () =>
       expect(
         JSXSlack(
           <Blocks>
             <Section>
-              <Escape>_:arrow_down: :custom_emoji: :カスタム＿絵文字: :커스텀_이모티콘:_</Escape>
+              <Escape>
+                _:arrow_down: :custom_emoji: :カスタム＿絵文字:
+                :커스텀_이모티콘:_
+              </Escape>
             </Section>
           </Blocks>,
         ),
       ).toStrictEqual([
         expect.objectContaining({
           text: expect.objectContaining({
-            text: '<!date^00000000^{_}|_>:arrow_down: :custom_emoji: :カスタム＿絵文字: :커스텀_이모티콘:<!date^00000000^{_}|_>',
+            text: "<!date^00000000^{_}|_>:arrow_down: :custom_emoji: :カスタム＿絵文字: :커스텀_이모티콘:<!date^00000000^{_}|_>",
           }),
         }),
-      ]))
+      ]));
 
-    it('ignores escaping underscore in valid link', () => {
+    it("ignores escaping underscore in valid link", () => {
       expect(
         JSXSlack(
           <Blocks>
@@ -75,20 +78,20 @@ describe('Built-in components', () => {
       ).toStrictEqual([
         expect.objectContaining({
           text: expect.objectContaining({
-            text: '<https://example.com/a_b_c|\u02cdlink\u02cd>',
+            text: "<https://example.com/a_b_c|\u02cdlink\u02cd>",
           }),
         }),
-      ])
-    })
+      ]);
+    });
 
-    it('ignores escaping underscore in valid time formatting', () => {
+    it("ignores escaping underscore in valid time formatting", () => {
       expect(
         JSXSlack(
           <Blocks>
             <Section>
               <Escape>
                 <time dateTime={1234567890} fallback="fall_back">
-                  {'{date_num} {time_secs}'}
+                  {"{date_num} {time_secs}"}
                 </time>
               </Escape>
             </Section>
@@ -97,22 +100,24 @@ describe('Built-in components', () => {
       ).toStrictEqual([
         expect.objectContaining({
           text: expect.objectContaining({
-            text: '<!date^1234567890^{date_num} {time_secs}|fall_back>',
+            text: "<!date^1234567890^{date_num} {time_secs}|fall_back>",
           }),
         }),
-      ])
-    })
-  })
+      ]);
+    });
+  });
 
-  describe('<Fragment> component', () => {
-    it('allows grouping multiple components for custom block', () => {
-      const CustomBlock: JSXSlack.FC<{ children: JSXSlack.ChildElements }> = ({ children }) => (
+  describe("<Fragment> component", () => {
+    it("allows grouping multiple components for custom block", () => {
+      const CustomBlock: JSXSlack.FC<{ children: JSXSlack.ChildElements }> = ({
+        children,
+      }) => (
         <Fragment>
           <Divider />
           <Section>{children}</Section>
           <Divider />
         </Fragment>
-      )
+      );
 
       expect(
         JSXSlack(
@@ -128,10 +133,10 @@ describe('Built-in components', () => {
             <Divider />
           </Blocks>,
         ),
-      )
-    })
+      );
+    });
 
-    it('provides equivalent short JSX syntax as <Fragment>', () =>
+    it("provides equivalent short JSX syntax as <Fragment>", () =>
       expect(
         <>
           a<b>b</b>c
@@ -140,15 +145,15 @@ describe('Built-in components', () => {
         <Fragment>
           a<b>b</b>c
         </Fragment>,
-      ))
+      ));
 
-    it('allows grouping select options', () => {
+    it("allows grouping select options", () => {
       const CustomOptions: JSXSlack.FC = () => (
         <>
           <Option value="a">A</Option>
           <Option value="b">B</Option>
         </>
-      )
+      );
 
       // for <Select>
       expect(
@@ -172,7 +177,7 @@ describe('Built-in components', () => {
             </Actions>
           </Blocks>,
         ),
-      )
+      );
 
       // for <SelectFragment>
       expect(
@@ -188,16 +193,16 @@ describe('Built-in components', () => {
             <Option value="b">B</Option>
           </SelectFragment>,
         ),
-      )
-    })
+      );
+    });
 
-    it('allows grouping overflow items', () => {
+    it("allows grouping overflow items", () => {
       const CustomOverflowItems: JSXSlack.FC = () => (
         <>
           <OverflowItem value="a">A</OverflowItem>
           <OverflowItem value="b">B</OverflowItem>
         </>
-      )
+      );
 
       expect(
         JSXSlack(
@@ -220,16 +225,16 @@ describe('Built-in components', () => {
             </Actions>
           </Blocks>,
         ),
-      )
-    })
+      );
+    });
 
-    it('allows grouping multiple HTML elements', () => {
+    it("allows grouping multiple HTML elements", () => {
       const CustomList: JSXSlack.FC = () => (
         <>
           <li>A</li>
           <li>B</li>
         </>
-      )
+      );
 
       expect(
         JSXSlack(
@@ -252,10 +257,10 @@ describe('Built-in components', () => {
             </Section>
           </Blocks>,
         ),
-      )
-    })
+      );
+    });
 
-    it('allows nested fragments', () => {
+    it("allows nested fragments", () => {
       expect(
         JSXSlack(
           <Blocks>
@@ -294,33 +299,33 @@ describe('Built-in components', () => {
             <Section>well</Section>
           </Blocks>,
         ),
-      )
-    })
-  })
+      );
+    });
+  });
 
-  describe('<SelectFragment> component', () => {
-    it('allows building object for external data source of <ExternalSelect>', () => {
-      const expectedOptions: Required<Pick<StaticSelect, 'options'>> = {
+  describe("<SelectFragment> component", () => {
+    it("allows building object for external data source of <ExternalSelect>", () => {
+      const expectedOptions: Required<Pick<StaticSelect, "options">> = {
         options: [
           {
-            text: { type: 'plain_text', text: 'A', emoji: true },
-            value: 'a',
+            text: { type: "plain_text", text: "A", emoji: true },
+            value: "a",
           },
           {
-            text: { type: 'plain_text', text: 'B', emoji: true },
-            value: 'b',
+            text: { type: "plain_text", text: "B", emoji: true },
+            value: "b",
           },
           {
-            text: { type: 'plain_text', text: 'C', emoji: true },
-            value: 'c',
+            text: { type: "plain_text", text: "C", emoji: true },
+            value: "c",
             description: {
-              type: 'plain_text',
-              text: 'description',
+              type: "plain_text",
+              text: "description",
               emoji: true,
             },
           },
         ],
-      }
+      };
 
       expect(
         JSXSlack(
@@ -332,7 +337,7 @@ describe('Built-in components', () => {
             </Option>
           </SelectFragment>,
         ),
-      ).toStrictEqual(expectedOptions)
+      ).toStrictEqual(expectedOptions);
 
       expect(
         JSXSlack(
@@ -344,43 +349,43 @@ describe('Built-in components', () => {
             </option>
           </SelectFragment>,
         ),
-      ).toStrictEqual(expectedOptions)
+      ).toStrictEqual(expectedOptions);
 
-      const expectedOptgroups: Required<Pick<StaticSelect, 'option_groups'>> = {
+      const expectedOptgroups: Required<Pick<StaticSelect, "option_groups">> = {
         option_groups: [
           {
-            label: { type: 'plain_text', text: 'A', emoji: true },
+            label: { type: "plain_text", text: "A", emoji: true },
             options: [
               {
-                text: { type: 'plain_text', text: 'one', emoji: true },
-                value: '1',
+                text: { type: "plain_text", text: "one", emoji: true },
+                value: "1",
               },
               {
-                text: { type: 'plain_text', text: 'two', emoji: true },
-                value: '2',
+                text: { type: "plain_text", text: "two", emoji: true },
+                value: "2",
               },
             ],
           },
           {
-            label: { type: 'plain_text', text: 'B', emoji: true },
+            label: { type: "plain_text", text: "B", emoji: true },
             options: [
               {
-                text: { type: 'plain_text', text: 'three', emoji: true },
-                value: '3',
+                text: { type: "plain_text", text: "three", emoji: true },
+                value: "3",
               },
               {
-                text: { type: 'plain_text', text: 'four', emoji: true },
-                value: '4',
+                text: { type: "plain_text", text: "four", emoji: true },
+                value: "4",
                 description: {
-                  type: 'plain_text',
-                  text: ':smile:',
+                  type: "plain_text",
+                  text: ":smile:",
                   emoji: true,
                 },
               },
             ],
           },
         ],
-      }
+      };
 
       expect(
         JSXSlack(
@@ -397,7 +402,7 @@ describe('Built-in components', () => {
             </Optgroup>
           </SelectFragment>,
         ),
-      ).toStrictEqual(expectedOptgroups)
+      ).toStrictEqual(expectedOptgroups);
 
       expect(
         JSXSlack(
@@ -414,17 +419,17 @@ describe('Built-in components', () => {
             </optgroup>
           </SelectFragment>,
         ),
-      ).toStrictEqual(expectedOptgroups)
-    })
+      ).toStrictEqual(expectedOptgroups);
+    });
 
-    it('allows no options to return empty result', () => {
+    it("allows no options to return empty result", () => {
       expect(JSXSlack(<SelectFragment />)).toStrictEqual({
         options: [],
-      })
+      });
 
       expect(JSXSlack(<SelectFragment>{}</SelectFragment>)).toStrictEqual({
         options: [],
-      })
+      });
 
       expect(
         JSXSlack(
@@ -436,7 +441,7 @@ describe('Built-in components', () => {
         ),
       ).toStrictEqual({
         options: [],
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

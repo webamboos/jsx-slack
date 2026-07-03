@@ -1,16 +1,15 @@
-import { MrkdwnElement } from '@slack/types'
-import { JSXSlack } from '../../jsx'
+import { MrkdwnElement } from "@slack/types";
+import { JSXSlack } from "../../jsx";
 import {
   cleanMeta,
   createComponent,
-  createElementInternal,
   isValidElementFromComponent,
-} from '../../jsx-internals'
-import { mrkdwn as toMrkdwn } from '../../mrkdwn/index'
-import { plainText } from './utils'
+} from "../../jsx-internals";
+import { mrkdwn as toMrkdwn } from "../../mrkdwn/index";
+import { plainText } from "./utils";
 
 interface MrkdwnProps {
-  children: JSXSlack.ChildElements
+  children: JSXSlack.ChildElements;
 
   /**
    * A boolean value whether to bypass HTML-like formatting by jsx-slack.
@@ -33,7 +32,7 @@ interface MrkdwnProps {
    * </Blocks>
    * ```
    */
-  raw?: boolean
+  raw?: boolean;
 
   /**
    * A boolean value whether to disable automatic parsing for links, channel
@@ -46,10 +45,10 @@ interface MrkdwnProps {
    * _Read "[Why you should consider disabling automatic parsing](https://api.slack.com/reference/surfaces/formatting#why_you_should_consider_disabling_automatic_parsing)"
    * in the documentation by Slack._
    */
-  verbatim?: boolean
+  verbatim?: boolean;
 }
 
-const defaultProps = { verbatim: true }
+const defaultProps = { verbatim: true };
 
 /**
  * Generate [the text composition object](https://api.slack.com/reference/block-kit/composition-objects#textthe)
@@ -146,63 +145,72 @@ const defaultProps = { verbatim: true }
  *
  * @returns The JSON of the composition object for mrkdwn text
  */
-export const Mrkdwn = createComponent<MrkdwnProps, MrkdwnElement>('Mrkdwn', (props) => ({
-  type: 'mrkdwn',
-  text: props.raw ? plainText(props.children).text : toMrkdwn(props.children),
-  verbatim: props.verbatim,
-}))
+export const Mrkdwn = createComponent<MrkdwnProps, MrkdwnElement>(
+  "Mrkdwn",
+  (props) => ({
+    type: "mrkdwn",
+    text: props.raw ? plainText(props.children).text : toMrkdwn(props.children),
+    verbatim: props.verbatim,
+  }),
+);
 
 export const mrkdwn = (
   text: JSXSlack.ChildElements,
-  defaultOpts: Omit<MrkdwnProps, 'children'> = defaultProps,
+  defaultOpts: Omit<MrkdwnProps, "children"> = defaultProps,
   force = false,
 ): MrkdwnElement => {
-  const [child] = JSXSlack.Children.toArray(text)
+  const [child] = JSXSlack.Children.toArray(text);
 
   if (isValidElementFromComponent(child, Mrkdwn)) {
     if (force)
       return (
-        <Mrkdwn {...(child.$$jsxslack.props || {})} children={child.$$jsxslack.children} />
-      ) as any
+        <Mrkdwn
+          {...(child.$$jsxslack.props || {})}
+          children={child.$$jsxslack.children}
+        />
+      ) as any;
 
-    return child as any
+    return child as any;
   }
 
-  return cleanMeta(<Mrkdwn {...defaultOpts} children={text} />) as MrkdwnElement
-}
+  return cleanMeta(
+    <Mrkdwn {...defaultOpts} children={text} />,
+  ) as MrkdwnElement;
+};
 
 export const mrkdwnForOption = (
   children: JSXSlack.ChildElements,
-  defaultOpts: Omit<MrkdwnProps, 'children'> = defaultProps,
+  defaultOpts: Omit<MrkdwnProps, "children"> = defaultProps,
 ): { text: MrkdwnElement; description?: MrkdwnElement } => {
-  let text: MrkdwnElement
-  let smallOriginalChildren: JSXSlack.ChildElement[] | undefined
+  let text: MrkdwnElement;
+  let smallOriginalChildren: JSXSlack.ChildElement[] | undefined;
 
-  const contents = JSXSlack.Children.toArray(children)
-  const smallFindTarget: JSXSlack.ChildElement[] = contents
+  const contents = JSXSlack.Children.toArray(children);
+  const smallFindTarget: JSXSlack.ChildElement[] = contents;
 
   if (isValidElementFromComponent(contents[0], Mrkdwn))
-    smallFindTarget.unshift(...contents[0].$$jsxslack.children)
+    smallFindTarget.unshift(...contents[0].$$jsxslack.children);
 
   const smallElement = smallFindTarget.find(
-    (c): c is JSXSlack.Node => JSXSlack.isValidElement(c) && c.$$jsxslack.type === 'small',
-  )
+    (c): c is JSXSlack.Node =>
+      JSXSlack.isValidElement(c) && c.$$jsxslack.type === "small",
+  );
 
   try {
     if (smallElement) {
-      smallOriginalChildren = smallElement.$$jsxslack.children
-      smallElement.$$jsxslack.children = []
+      smallOriginalChildren = smallElement.$$jsxslack.children;
+      smallElement.$$jsxslack.children = [];
     }
 
-    text = mrkdwn(children, defaultOpts, true)
+    text = mrkdwn(children, defaultOpts, true);
   } finally {
     if (smallElement && smallOriginalChildren)
-      smallElement.$$jsxslack.children = smallOriginalChildren
+      smallElement.$$jsxslack.children = smallOriginalChildren;
   }
 
   const description = smallElement
     ? mrkdwn(smallElement.$$jsxslack.children, defaultOpts)
-    : undefined
+    : undefined;
 
-  return { text, description }
-}
+  return { text, description };
+};

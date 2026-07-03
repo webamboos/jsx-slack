@@ -1,4 +1,4 @@
-/** @jsx JSXSlack.h */
+import { expect, beforeEach, describe, it } from "vitest";
 import {
   Actions,
   Blocks,
@@ -10,18 +10,18 @@ import {
   Section,
   Context,
   Field,
-} from '../../../src/index'
+} from "@webamboos/jsx-slack";
 
-beforeEach(() => JSXSlack.exactMode(false))
+beforeEach(() => JSXSlack.exactMode(false));
 
-describe('Composition objects', () => {
-  describe('<Confirm>', () => {
-    it('returns the actual composition object', () =>
+describe("Composition objects", () => {
+  describe("<Confirm>", () => {
+    it("returns the actual composition object", () =>
       expect(<Confirm>Confirm</Confirm>).toStrictEqual({
         text: <Mrkdwn verbatim>Confirm</Mrkdwn>,
-      }))
+      }));
 
-    it('outputs action included <Confirm> object', () =>
+    it("outputs action included <Confirm> object", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -62,16 +62,21 @@ describe('Composition objects', () => {
             "type": "actions",
           },
         ]
-      `))
+      `));
 
-    it('outputs action included <Confirm> object with a <Mrkdwn> child', () =>
+    it("outputs action included <Confirm> object with a <Mrkdwn> child", () =>
       expect(
         JSXSlack(
           <Blocks>
             <Actions blockId="actions">
               <Button
                 confirm={
-                  <Confirm title="Share to SNS" confirm="Yes, please" deny="Cancel" style="primary">
+                  <Confirm
+                    title="Share to SNS"
+                    confirm="Yes, please"
+                    deny="Cancel"
+                    style="primary"
+                  >
                     <Mrkdwn verbatim={false}>
                       <b>Are you sure?</b> Message will be share.
                     </Mrkdwn>
@@ -123,11 +128,11 @@ describe('Composition objects', () => {
             "type": "actions",
           },
         ]
-      `))
-  })
+      `));
+  });
 
-  describe('<Mrkdwn>', () => {
-    it('outputs a <Section> block with a <Mrkdwn> component and preserves the verbatim prop', () => {
+  describe("<Mrkdwn>", () => {
+    it("outputs a <Section> block with a <Mrkdwn> component and preserves the verbatim prop", () => {
       expect(
         JSXSlack(
           <Blocks>
@@ -138,10 +143,10 @@ describe('Composition objects', () => {
         ),
       ).toStrictEqual([
         {
-          type: 'section',
-          text: { type: 'mrkdwn', text: 'Hello!', verbatim: false },
+          type: "section",
+          text: { type: "mrkdwn", text: "Hello!", verbatim: false },
         },
-      ])
+      ]);
 
       expect(
         JSXSlack(
@@ -155,13 +160,13 @@ describe('Composition objects', () => {
         ),
       ).toStrictEqual([
         {
-          type: 'section',
-          fields: [{ type: 'mrkdwn', text: 'Hello!', verbatim: false }],
+          type: "section",
+          fields: [{ type: "mrkdwn", text: "Hello!", verbatim: false }],
         },
-      ])
-    })
+      ]);
+    });
 
-    it('outputs a <Context> block with an image and multiple mrkdwn elements', () =>
+    it("outputs a <Context> block with an image and multiple mrkdwn elements", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -177,33 +182,33 @@ describe('Composition objects', () => {
         ),
       ).toStrictEqual([
         {
-          type: 'context',
+          type: "context",
           elements: [
             {
-              type: 'image',
-              image_url: 'https://example.com/test.jpg',
-              alt_text: 'Test Image',
+              type: "image",
+              image_url: "https://example.com/test.jpg",
+              alt_text: "Test Image",
             },
             {
-              type: 'mrkdwn',
-              text: 'Supporting `context` block would be hard!',
+              type: "mrkdwn",
+              text: "Supporting `context` block would be hard!",
               verbatim: true,
             },
             {
-              type: 'mrkdwn',
-              text: '_@here_',
+              type: "mrkdwn",
+              text: "_@here_",
               verbatim: false,
             },
             {
-              type: 'mrkdwn',
-              text: ':dizzy_face:',
+              type: "mrkdwn",
+              text: ":dizzy_face:",
               verbatim: true,
             },
           ],
         },
-      ]))
+      ]));
 
-    it('converts <Mrkdwn> elements into mrkdwn elements and preserves the verbatim prop', () =>
+    it("converts <Mrkdwn> elements into mrkdwn elements and preserves the verbatim prop", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -215,40 +220,40 @@ describe('Composition objects', () => {
         ),
       ).toStrictEqual([
         {
-          type: 'context',
+          type: "context",
           elements: [
-            { type: 'mrkdwn', text: 'Hello', verbatim: false },
-            { type: 'mrkdwn', text: 'World', verbatim: true },
+            { type: "mrkdwn", text: "Hello", verbatim: false },
+            { type: "mrkdwn", text: "World", verbatim: true },
           ],
         },
-      ]))
+      ]));
 
-    it('bypasses HTML-like formatting and auto escape if enabled raw prop', () => {
-      expect(<Mrkdwn raw>{'<!here> test raw string & disabled auto escape'}</Mrkdwn>).toStrictEqual(
-        {
-          type: 'mrkdwn',
-          text: '<!here> test raw string & disabled auto escape',
-        },
-      )
+    it("bypasses HTML-like formatting and auto escape if enabled raw prop", () => {
+      expect(
+        <Mrkdwn raw>{"<!here> test raw string & disabled auto escape"}</Mrkdwn>,
+      ).toStrictEqual({
+        type: "mrkdwn",
+        text: "<!here> test raw string & disabled auto escape",
+      });
 
       expect(
         <Mrkdwn raw>
           ignores <b>bold</b>, <i>italic</i>, and <s>strikethrough</s>
         </Mrkdwn>,
       ).toStrictEqual({
-        type: 'mrkdwn',
-        text: 'ignores bold, italic, and strikethrough',
-      })
+        type: "mrkdwn",
+        text: "ignores bold, italic, and strikethrough",
+      });
 
       expect(
         <Mrkdwn raw verbatim>
           raw &amp; verbatim
         </Mrkdwn>,
       ).toStrictEqual({
-        type: 'mrkdwn',
-        text: 'raw & verbatim', // &amp; is required to render "&" in JSX
+        type: "mrkdwn",
+        text: "raw & verbatim", // &amp; is required to render "&" in JSX
         verbatim: true,
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

@@ -1,4 +1,5 @@
-/** @jsx JSXSlack.h */
+import { expect, beforeEach, describe, it } from "vitest";
+
 import {
   DividerBlock,
   FileBlock,
@@ -6,7 +7,7 @@ import {
   InputBlock,
   PlainTextElement,
   SectionBlock,
-} from '@slack/types'
+} from "@slack/types";
 import {
   Actions,
   Blocks,
@@ -35,37 +36,37 @@ import {
   UsersSelect,
   Video,
   WorkflowButton,
-} from '../../src/index'
+} from "@webamboos/jsx-slack";
 
-beforeEach(() => JSXSlack.exactMode(false))
+beforeEach(() => JSXSlack.exactMode(false));
 
-describe('Layout blocks', () => {
-  describe('<Section>', () => {
+describe("Layout blocks", () => {
+  describe("<Section>", () => {
     const section: SectionBlock = {
-      type: 'section',
-      block_id: 'hello',
-      text: { type: 'mrkdwn', text: 'Hello!', verbatim: true },
-    }
+      type: "section",
+      block_id: "hello",
+      text: { type: "mrkdwn", text: "Hello!", verbatim: true },
+    };
 
-    it('outputs section block', () =>
+    it("outputs section block", () =>
       expect(
         JSXSlack(
           <Blocks>
             <Section blockId="hello">Hello!</Section>
           </Blocks>,
         ),
-      ).toStrictEqual([section]))
+      ).toStrictEqual([section]));
 
-    it('allows using HTML-compatible <section> element', () =>
+    it("allows using HTML-compatible <section> element", () =>
       expect(
         JSXSlack(
           <Blocks>
             <section id="hello">Hello!</section>
           </Blocks>,
         ),
-      ).toStrictEqual([section]))
+      ).toStrictEqual([section]));
 
-    it('throws error when <Section> has unexpected component', () =>
+    it("throws error when <Section> has unexpected component", () =>
       expect(() =>
         JSXSlack(
           <Blocks>
@@ -74,22 +75,22 @@ describe('Layout blocks', () => {
             </Section>
           </Blocks>,
         ),
-      ).toThrow(/unexpected/))
-  })
+      ).toThrow(/unexpected/));
+  });
 
-  describe('<Section> with accessory', () => {
+  describe("<Section> with accessory", () => {
     const section: SectionBlock = {
-      type: 'section',
-      block_id: 'with_image',
-      text: { type: 'mrkdwn', text: 'Image example', verbatim: true },
+      type: "section",
+      block_id: "with_image",
+      text: { type: "mrkdwn", text: "Image example", verbatim: true },
       accessory: {
-        type: 'image',
-        image_url: 'https://example.com/image.jpg',
-        alt_text: 'Example image',
+        type: "image",
+        image_url: "https://example.com/image.jpg",
+        alt_text: "Example image",
       },
-    }
+    };
 
-    it('outputs section block with image accessories', () => {
+    it("outputs section block with image accessories", () => {
       for (const accessory of [
         <Image
           src="https://example.com/image.jpg"
@@ -111,11 +112,11 @@ describe('Layout blocks', () => {
               </Section>
             </Blocks>,
           ),
-        ).toStrictEqual([section])
+        ).toStrictEqual([section]);
       }
-    })
+    });
 
-    it('outputs section block with block element accessories', () => {
+    it("outputs section block with block element accessories", () => {
       for (const accessory of [
         <Button>Button</Button>,
         <button>button</button>,
@@ -147,7 +148,7 @@ describe('Layout blocks', () => {
         </Overflow>,
         <DatePicker />,
         <TimePicker />,
-        <WorkflowButton workflow={{ trigger: { url: 'https://example.com/' } }}>
+        <WorkflowButton workflow={{ trigger: { url: "https://example.com/" } }}>
           WorkflowButton
         </WorkflowButton>,
       ]) {
@@ -161,28 +162,28 @@ describe('Layout blocks', () => {
           expect.objectContaining({
             accessory: expect.objectContaining({ type: expect.any(String) }),
           }),
-        ])
+        ]);
       }
-    })
+    });
 
-    it('outputs section block with multi-select menus', () => {
+    it("outputs section block with multi-select menus", () => {
       // Static multiple select
       const [s] = JSXSlack(
         <Blocks>
           <Section>
             Select
-            <Select multiple maxSelectedItems={2} value={['a', 'c']}>
+            <Select multiple maxSelectedItems={2} value={["a", "c"]}>
               <Option value="a">a</Option>
               <Option value="b">b</Option>
               <Option value="c">c</Option>
             </Select>
           </Section>
         </Blocks>,
-      )
+      );
 
-      expect(s.accessory.type).toBe('multi_static_select')
-      expect(s.accessory.max_selected_items).toBe(2)
-      expect(s.accessory.initial_options).toHaveLength(2)
+      expect(s.accessory.type).toBe("multi_static_select");
+      expect(s.accessory.max_selected_items).toBe(2);
+      expect(s.accessory.initial_options).toHaveLength(2);
 
       // Multiple select for external sources
       for (const accessory of [
@@ -192,43 +193,53 @@ describe('Layout blocks', () => {
           initialOption={<Option value="a">a</Option>}
         />,
         <UsersSelect multiple maxSelectedItems={2} initialUser="U00000000" />,
-        <ConversationsSelect multiple maxSelectedItems={2} initialConversation={['C00000000']} />,
-        <ChannelsSelect multiple maxSelectedItems={2} initialChannel="D00000000" />,
+        <ConversationsSelect
+          multiple
+          maxSelectedItems={2}
+          initialConversation={["C00000000"]}
+        />,
+        <ChannelsSelect
+          multiple
+          maxSelectedItems={2}
+          initialChannel="D00000000"
+        />,
       ]) {
         const [ms] = JSXSlack(
           <Blocks>
             <Section>Select {accessory}</Section>
           </Blocks>,
-        )
+        );
 
-        expect(ms.accessory.type.startsWith('multi_')).toBe(true)
-        expect(ms.accessory.max_selected_items).toBe(2)
+        expect(ms.accessory.type.startsWith("multi_")).toBe(true);
+        expect(ms.accessory.max_selected_items).toBe(2);
 
-        const initialKey: any = Object.keys(ms.accessory).find((k) => k.startsWith('initial_'))
-        expect(ms.accessory[initialKey]).toHaveLength(1)
+        const initialKey: any = Object.keys(ms.accessory).find((k) =>
+          k.startsWith("initial_"),
+        );
+        expect(ms.accessory[initialKey]).toHaveLength(1);
       }
-    })
-  })
+    });
+  });
 
-  describe('<Section> with fields', () => {
+  describe("<Section> with fields", () => {
     const section: SectionBlock = {
-      type: 'section',
-      block_id: 'fields',
+      type: "section",
+      block_id: "fields",
       fields: [
         {
-          type: 'mrkdwn',
-          text: '*Field A*\n123',
+          type: "mrkdwn",
+          text: "*Field A*\n123",
           verbatim: true,
         },
         {
-          type: 'mrkdwn',
-          text: '*Field B*\n456',
+          type: "mrkdwn",
+          text: "*Field B*\n456",
           verbatim: true,
         },
       ],
-    }
+    };
 
-    it('outputs section block with fields option', () =>
+    it("outputs section block with fields option", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -246,57 +257,57 @@ describe('Layout blocks', () => {
             </Section>
           </Blocks>,
         ),
-      ).toStrictEqual([section]))
+      ).toStrictEqual([section]));
 
-    it('throws error when passed 11 fields', () =>
+    it("throws error when passed 11 fields", () =>
       expect(() => (
         <Section>
           {[...Array(11)].map(() => (
             <Field>test</Field>
           ))}
         </Section>
-      )).toThrow())
-  })
+      )).toThrow());
+  });
 
-  describe('<Divider>', () => {
+  describe("<Divider>", () => {
     const divider: DividerBlock = {
-      type: 'divider',
-      block_id: 'divider',
-    }
+      type: "divider",
+      block_id: "divider",
+    };
 
-    it('outputs divider block', () =>
+    it("outputs divider block", () =>
       expect(
         JSXSlack(
           <Blocks>
             <Divider blockId="divider" />
           </Blocks>,
         ),
-      ).toStrictEqual([divider]))
+      ).toStrictEqual([divider]));
 
-    it('allows using HTML-compatible <hr> element', () =>
+    it("allows using HTML-compatible <hr> element", () =>
       expect(
         JSXSlack(
           <Blocks>
             <hr id="divider" />
           </Blocks>,
         ),
-      ).toStrictEqual([divider]))
-  })
+      ).toStrictEqual([divider]));
+  });
 
-  describe('<Image>', () => {
+  describe("<Image>", () => {
     const image: ImageBlock = {
-      type: 'image',
-      image_url: 'https://example.com/test.jpg',
-      alt_text: 'Test image',
+      type: "image",
+      image_url: "https://example.com/test.jpg",
+      alt_text: "Test image",
       title: {
-        type: 'plain_text',
-        text: 'This is a test image!',
+        type: "plain_text",
+        text: "This is a test image!",
         emoji: true,
       },
-      block_id: 'image',
-    }
+      block_id: "image",
+    };
 
-    it('outputs image block', () =>
+    it("outputs image block", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -308,9 +319,9 @@ describe('Layout blocks', () => {
             />
           </Blocks>,
         ),
-      ).toStrictEqual([image]))
+      ).toStrictEqual([image]));
 
-    it('allows using HTML-compatible <img> element', () =>
+    it("allows using HTML-compatible <img> element", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -322,11 +333,11 @@ describe('Layout blocks', () => {
             />
           </Blocks>,
         ),
-      ).toStrictEqual([image]))
-  })
+      ).toStrictEqual([image]));
+  });
 
-  describe('<Actions>', () => {
-    it('ignores invalid literal values in children', () =>
+  describe("<Actions>", () => {
+    it("ignores invalid literal values in children", () =>
       expect(
         // @ts-expect-error
         <Actions>
@@ -337,16 +348,16 @@ describe('Layout blocks', () => {
         <Actions>
           <Button>Valid button</Button>
         </Actions>,
-      ))
+      ));
 
-    it('throws error when there is invalid element in children', () =>
+    it("throws error when there is invalid element in children", () =>
       expect(() => (
         <Actions>
           <span />
         </Actions>
-      )).toThrow(/<span>/))
+      )).toThrow(/<span>/));
 
-    it('throws error when the number of elements is 26', () =>
+    it("throws error when the number of elements is 26", () =>
       expect(() =>
         JSXSlack(
           <Blocks>
@@ -357,11 +368,11 @@ describe('Layout blocks', () => {
             </Actions>
           </Blocks>,
         ),
-      ).toThrow())
-  })
+      ).toThrow());
+  });
 
-  describe('<Context>', () => {
-    it('outputs context block', () =>
+  describe("<Context>", () => {
+    it("outputs context block", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -369,40 +380,43 @@ describe('Layout blocks', () => {
               Hello! <b>World!</b>
               <img src="https://example.com/test.jpg" alt="image" />
               Image + Text
-              <Image src="https://example.com/test2.jpg" alt="image component" />
+              <Image
+                src="https://example.com/test2.jpg"
+                alt="image component"
+              />
             </Context>
           </Blocks>,
         ),
       ).toStrictEqual([
         {
-          type: 'context',
-          block_id: 'context',
+          type: "context",
+          block_id: "context",
           elements: [
             {
-              type: 'mrkdwn',
-              text: 'Hello! *World!*',
+              type: "mrkdwn",
+              text: "Hello! *World!*",
               verbatim: true,
             },
             {
-              type: 'image',
-              image_url: 'https://example.com/test.jpg',
-              alt_text: 'image',
+              type: "image",
+              image_url: "https://example.com/test.jpg",
+              alt_text: "image",
             },
             {
-              type: 'mrkdwn',
-              text: 'Image + Text',
+              type: "mrkdwn",
+              text: "Image + Text",
               verbatim: true,
             },
             {
-              type: 'image',
-              image_url: 'https://example.com/test2.jpg',
-              alt_text: 'image component',
+              type: "image",
+              image_url: "https://example.com/test2.jpg",
+              alt_text: "image component",
             },
           ],
         },
-      ]))
+      ]));
 
-    it('converts <span> elements into mrkdwn elements', () =>
+    it("converts <span> elements into mrkdwn elements", () =>
       expect(
         JSXSlack(
           <Blocks>
@@ -420,17 +434,17 @@ describe('Layout blocks', () => {
         ),
       ).toStrictEqual([
         {
-          type: 'context',
+          type: "context",
           elements: [
-            { type: 'mrkdwn', text: '*A*', verbatim: true },
-            { type: 'mrkdwn', text: 'B\nC', verbatim: true },
-            { type: 'mrkdwn', text: 'D', verbatim: true },
-            { type: 'mrkdwn', text: 'E _F_ G', verbatim: true },
-            { type: 'mrkdwn', text: 'H', verbatim: true },
+            { type: "mrkdwn", text: "*A*", verbatim: true },
+            { type: "mrkdwn", text: "B\nC", verbatim: true },
+            { type: "mrkdwn", text: "D", verbatim: true },
+            { type: "mrkdwn", text: "E _F_ G", verbatim: true },
+            { type: "mrkdwn", text: "H", verbatim: true },
           ],
         },
-      ]))
-    it('throws error when the number of elements is 11', () =>
+      ]));
+    it("throws error when the number of elements is 11", () =>
       expect(() =>
         JSXSlack(
           <Blocks>
@@ -449,53 +463,53 @@ describe('Layout blocks', () => {
             </Context>
           </Blocks>,
         ),
-      ).toThrow())
-  })
+      ).toThrow());
+  });
 
-  describe('<Header>', () => {
+  describe("<Header>", () => {
     const text: PlainTextElement = {
-      type: 'plain_text',
-      text: 'Heads up!',
+      type: "plain_text",
+      text: "Heads up!",
       emoji: true,
-    }
-    const header = { type: 'header', block_id: 'header', text }
+    };
+    const header = { type: "header", block_id: "header", text };
 
-    it('outputs header block', () => {
-      expect(<Header id="header">Heads up!</Header>).toStrictEqual(header)
-      expect(<Header blockId="header">Heads up!</Header>).toStrictEqual(header)
-    })
+    it("outputs header block", () => {
+      expect(<Header id="header">Heads up!</Header>).toStrictEqual(header);
+      expect(<Header blockId="header">Heads up!</Header>).toStrictEqual(header);
+    });
 
-    it('is aliased from <header> HTML intrinsic element by container', () => {
+    it("is aliased from <header> HTML intrinsic element by container", () => {
       expect(
         <Blocks>
           <header id="header">Heads up!</header>
         </Blocks>,
-      ).toStrictEqual([header])
+      ).toStrictEqual([header]);
 
       expect(
         <Modal title="modal">
           <header id="header">Heads up!</header>
         </Modal>,
-      ).toHaveProperty('blocks', [header])
+      ).toHaveProperty("blocks", [header]);
 
       expect(
         <Home>
           <header id="header">Heads up!</header>
         </Home>,
-      ).toHaveProperty('blocks', [header])
-    })
+      ).toHaveProperty("blocks", [header]);
+    });
 
-    it('ignores HTML elements for styling', () => {
+    it("ignores HTML elements for styling", () => {
       expect(
         <Header>
           <b>
             Hello, <i>world!</i>
           </b>
         </Header>,
-      ).toHaveProperty('text.text', 'Hello, world!')
-    })
+      ).toHaveProperty("text.text", "Hello, world!");
+    });
 
-    it('allows using <br /> tag', () => {
+    it("allows using <br /> tag", () => {
       expect(
         <Header>
           EXTRA!
@@ -504,41 +518,41 @@ describe('Layout blocks', () => {
           <br />
           EXTRA!
         </Header>,
-      ).toHaveProperty('text.text', 'EXTRA!\nEXTRA!\nEXTRA!')
-    })
+      ).toHaveProperty("text.text", "EXTRA!\nEXTRA!\nEXTRA!");
+    });
 
-    it.skip('allows using <p> tag [TODO]', () => {
+    it.skip("allows using <p> tag [TODO]", () => {
       expect(
         <Header>
           <p>Hello!</p>
           <p>World!</p>
         </Header>,
-      ).toHaveProperty('text.text', 'Hello!\n\nWorld!')
+      ).toHaveProperty("text.text", "Hello!\n\nWorld!");
 
       expect(
         <Header>
           A<p>B</p>C
         </Header>,
-      ).toHaveProperty('text.text', 'A\n\nB\n\nC')
-    })
-  })
+      ).toHaveProperty("text.text", "A\n\nB\n\nC");
+    });
+  });
 
-  describe('<Video>', () => {
+  describe("<Video>", () => {
     const video = {
-      alt_text: 'Video example',
-      author_name: 'author',
-      block_id: 'video',
-      description: { type: 'plain_text', text: 'Description', emoji: true },
-      provider_icon_url: 'https://example.com/favicon.png',
-      provider_name: 'Example site',
-      thumbnail_url: 'https://example.com/video/thumbnail.jpg',
-      title_url: 'https://example.com/video/',
-      title: { type: 'plain_text', text: 'Video example', emoji: true },
-      type: 'video',
-      video_url: 'https://example.com/video/embed',
-    }
+      alt_text: "Video example",
+      author_name: "author",
+      block_id: "video",
+      description: { type: "plain_text", text: "Description", emoji: true },
+      provider_icon_url: "https://example.com/favicon.png",
+      provider_name: "Example site",
+      thumbnail_url: "https://example.com/video/thumbnail.jpg",
+      title_url: "https://example.com/video/",
+      title: { type: "plain_text", text: "Video example", emoji: true },
+      type: "video",
+      video_url: "https://example.com/video/embed",
+    };
 
-    it('outpus video block', () => {
+    it("outpus video block", () => {
       // Full
       expect(
         <Blocks>
@@ -555,7 +569,7 @@ describe('Layout blocks', () => {
             titleUrl="https://example.com/video/"
           />
         </Blocks>,
-      ).toStrictEqual([video])
+      ).toStrictEqual([video]);
 
       // Minimum
       expect(
@@ -570,16 +584,16 @@ describe('Layout blocks', () => {
         </Blocks>,
       ).toStrictEqual([
         {
-          type: 'video',
-          video_url: 'https://example.com/video/embed',
-          alt_text: 'Video example',
-          title: { type: 'plain_text', text: 'Video example', emoji: true },
-          thumbnail_url: 'https://example.com/video/thumbnail.jpg',
+          type: "video",
+          video_url: "https://example.com/video/embed",
+          alt_text: "Video example",
+          title: { type: "plain_text", text: "Video example", emoji: true },
+          thumbnail_url: "https://example.com/video/thumbnail.jpg",
         },
-      ])
-    })
+      ]);
+    });
 
-    it('is aliased from <video> HTML intrinsic element by container', () => {
+    it("is aliased from <video> HTML intrinsic element by container", () => {
       const videoIntrinsicElement = (
         <video
           // Prefers Slack API field props over HTML-compatible alias props
@@ -598,77 +612,83 @@ describe('Layout blocks', () => {
           providerIconUrl="https://example.com/favicon.png"
           titleUrl="https://example.com/video/"
         />
-      )
+      );
 
-      expect(<Blocks>{videoIntrinsicElement}</Blocks>).toStrictEqual([video])
+      expect(<Blocks>{videoIntrinsicElement}</Blocks>).toStrictEqual([video]);
 
-      expect(<Modal title="modal">{videoIntrinsicElement}</Modal>).toHaveProperty('blocks', [video])
+      expect(
+        <Modal title="modal">{videoIntrinsicElement}</Modal>,
+      ).toHaveProperty("blocks", [video]);
 
-      expect(<Home>{videoIntrinsicElement}</Home>).toHaveProperty('blocks', [video])
-    })
-  })
+      expect(<Home>{videoIntrinsicElement}</Home>).toHaveProperty("blocks", [
+        video,
+      ]);
+    });
+  });
 
-  describe('<File>', () => {
+  describe("<File>", () => {
     const file: FileBlock = {
-      block_id: 'file',
-      external_id: 'ABCD1',
-      source: 'remote',
-      type: 'file',
-    }
+      block_id: "file",
+      external_id: "ABCD1",
+      source: "remote",
+      type: "file",
+    };
 
-    it('outputs file block', () =>
+    it("outputs file block", () =>
       expect(
         JSXSlack(
           <Blocks>
             <File blockId="file" externalId="ABCD1" />
           </Blocks>,
         ),
-      ).toStrictEqual([file]))
+      ).toStrictEqual([file]));
 
-    it('allows overriding source prop for future use', () =>
+    it("allows overriding source prop for future use", () =>
       expect(
         JSXSlack(
           <Blocks>
             <File id="file" externalId="ABCD1" source="local" />
           </Blocks>,
         ),
-      ).toStrictEqual([{ ...file, source: 'local' }]))
-  })
+      ).toStrictEqual([{ ...file, source: "local" }]));
+  });
 
-  describe('<Call>', () => {
-    it('outputs call block', () => {
+  describe("<Call>", () => {
+    it("outputs call block", () => {
       expect(
         <Blocks>
           <Call id="call_block" callId="R01234567" />
         </Blocks>,
       ).toStrictEqual([
         {
-          type: 'call',
-          block_id: 'call_block',
-          call_id: 'R01234567',
+          type: "call",
+          block_id: "call_block",
+          call_id: "R01234567",
         },
-      ])
+      ]);
 
-      expect(<Call id="abc" callId="R123" />).toStrictEqual(<Call blockId="abc" callId="R123" />)
-    })
-  })
+      expect(<Call id="abc" callId="R123" />).toStrictEqual(
+        <Call blockId="abc" callId="R123" />,
+      );
+    });
+  });
 
-  describe('<Input> (layout block)', () => {
-    it('outputs input block with wrapped element', () => {
+  describe("<Input> (layout block)", () => {
+    it("outputs input block with wrapped element", () => {
       const select = (
         <Select>
           <Option value="test">test</Option>
         </Select>
-      )
+      );
 
       const expected: InputBlock = {
-        type: 'input',
-        block_id: 'input-id',
-        label: { type: 'plain_text', text: 'Select', emoji: true },
-        hint: { type: 'plain_text', text: 'foobar', emoji: true },
+        type: "input",
+        block_id: "input-id",
+        label: { type: "plain_text", text: "Select", emoji: true },
+        hint: { type: "plain_text", text: "foobar", emoji: true },
         optional: true,
         element: JSXSlack(select),
-      }
+      };
 
       const { blocks } = JSXSlack(
         <Modal title="test">
@@ -676,27 +696,37 @@ describe('Layout blocks', () => {
             {select}
           </Input>
         </Modal>,
-      )
+      );
 
-      expect(blocks).toStrictEqual([expected])
+      expect(blocks).toStrictEqual([expected]);
 
       // HTML-compatible aliases
       expect(
         JSXSlack(
           <Modal title="test">
-            <Input id="input-id" label="Select" title="foobar" children={select} />
+            <Input
+              id="input-id"
+              label="Select"
+              title="foobar"
+              children={select}
+            />
           </Modal>,
         ).blocks,
-      ).toStrictEqual(blocks)
+      ).toStrictEqual(blocks);
 
       // Intrinsic HTML elements
       expect(
         JSXSlack(
           <Modal title="test">
-            <input id="input-id" label="Select" title="foobar" children={select} />
+            <input
+              id="input-id"
+              label="Select"
+              title="foobar"
+              children={select}
+            />
           </Modal>,
         ).blocks,
-      ).toStrictEqual(blocks)
+      ).toStrictEqual(blocks);
 
       expect(
         JSXSlack(
@@ -706,7 +736,7 @@ describe('Layout blocks', () => {
             </input>
           </Modal>,
         ).blocks,
-      ).toStrictEqual(blocks)
+      ).toStrictEqual(blocks);
 
       expect(
         JSXSlack(
@@ -716,10 +746,10 @@ describe('Layout blocks', () => {
             </select>
           </Modal>,
         ).blocks,
-      ).toStrictEqual(blocks)
-    })
+      ).toStrictEqual(blocks);
+    });
 
-    it('throws error when wrapped invalid element', () => {
+    it("throws error when wrapped invalid element", () => {
       expect(() =>
         JSXSlack(
           <Modal title="test">
@@ -731,12 +761,12 @@ describe('Layout blocks', () => {
             </Input>
           </Modal>,
         ),
-      ).toThrow(/invalid/)
+      ).toThrow(/invalid/);
 
       expect(() => (
         // @ts-expect-error
         <Input label="invalid">foobar</Input>
-      )).toThrow(/invalid/)
-    })
-  })
-})
+      )).toThrow(/invalid/);
+    });
+  });
+});
