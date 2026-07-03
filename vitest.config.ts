@@ -17,7 +17,7 @@ export default defineConfig({
     jsx: 'automatic',
     jsxImportSource: 'jsx-slack',
   },
-  oxc: false as any,
+  oxc: false,
   resolve: {
     alias: [
       {
