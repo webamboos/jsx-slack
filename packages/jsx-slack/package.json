@@ -48,7 +48,7 @@
     }
   },
   "scripts": {
-    "build": "rolldown -c",
+    "build": "rolldown -c && tsc",
     "check:audit": "pnpm audit",
     "check:fmt": "oxfmt --check",
     "check:ts": "tsc --noEmit",
