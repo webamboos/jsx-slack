@@ -1,3 +1,4 @@
+// oxlint-disable no-console
 /** @jsxImportSource @webamboos/jsx-slack */
 import {
   Actions,
