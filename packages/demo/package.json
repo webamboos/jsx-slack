@@ -1,0 +1,16 @@
+{
+  "name": "demo",
+  "scripts": {
+    "check": "tsc --noEmit && node --import @swc-node/register/esm-register src/demo.tsx",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@webamboos/jsx-slack": "workspace:*"
+  },
+  "devDependencies": {
+    "@swc-node/register": "^1.11.1",
+    "@vitest/coverage-v8": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

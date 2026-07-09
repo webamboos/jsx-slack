@@ -145,12 +145,7 @@ By passing suitable props such as required `label` prop, select-like components 
 
 ```jsx
 <Modal title="Programming survey">
-  <Select
-    label="Language"
-    name="language"
-    title="Pick language you want to learn."
-    required
-  >
+  <Select label="Language" name="language" title="Pick language you want to learn." required>
     <Option value="javascript">JavaScript</Option>
     <Option value="python">Python</Option>
     <Option value="java">Java</Option>
@@ -233,11 +228,7 @@ It requires setup JSON entry URL in your Slack app. [Learn about external source
 ```jsx
 <Blocks>
   <Actions>
-    <ExternalSelect
-      actionId="category"
-      placeholder="Select category..."
-      minQueryLength={2}
-    />
+    <ExternalSelect actionId="category" placeholder="Select category..." minQueryLength={2} />
   </Actions>
 </Blocks>
 ```
@@ -359,11 +350,7 @@ For example, `<ConversationsSelect initialConversation="current" />` in the moda
 
 ```jsx
 <Modal title="Send a message">
-  <ConversationsSelect
-    label="Send to..."
-    initialConversation="current"
-    required
-  />
+  <ConversationsSelect label="Send to..." initialConversation="current" required />
   <Textarea label="Message" maxLength={280} required />
 </Modal>
 ```
@@ -563,8 +550,7 @@ A container for grouping checkboxes.
     <b>ToDo List</b>
     <CheckboxGroup actionId="todo">
       <Checkbox value="xxx-0001">
-        <b>Learn about Slack app</b> (
-        <time dateTime={new Date(2020, 1, 24)}>{'{date}'}</time>)
+        <b>Learn about Slack app</b> (<time dateTime={new Date(2020, 1, 24)}>{'{date}'}</time>)
         <small>
           <i>
             XXX-0001: <b>High</b>
@@ -572,8 +558,7 @@ A container for grouping checkboxes.
         </small>
       </Checkbox>
       <Checkbox value="xxx-0002">
-        <b>Learn about jsx-slack</b> (
-        <time dateTime={new Date(2020, 1, 27)}>{'{date}'}</time>)
+        <b>Learn about jsx-slack</b> (<time dateTime={new Date(2020, 1, 27)}>{'{date}'}</time>)
         <small>
           <i>
             XXX-0002: <b>Medium</b>
@@ -709,10 +694,7 @@ A container for grouping radio buttons.
       <RadioButton value="premium" description="$30/month">
         <b>Premium</b>
       </RadioButton>
-      <RadioButton
-        value="business"
-        description={<i>Please contact to support.</i>}
-      >
+      <RadioButton value="business" description={<i>Please contact to support.</i>}>
         <b>Business</b>
       </RadioButton>
     </RadioButtonGroup>
@@ -1051,10 +1033,7 @@ The best practice is only storing the value of a pointer to reference data store
 If you want to store hidden values by own way, you can use a custom transformer by passing function to `privateMetadata` prop in the parent `<Modal>` and `<Home>`.
 
 ```jsx
-<Modal
-  title="test"
-  privateMetadata={(hidden) => hidden && new URLSearchParams(hidden).toString()}
->
+<Modal title="test" privateMetadata={(hidden) => hidden && new URLSearchParams(hidden).toString()}>
   <Input type="hidden" name="A" value="foobar" />
   <Input type="hidden" name="B" value={123} />
   <Input type="hidden" name="C" value={true} />
@@ -1089,13 +1068,7 @@ The transformer takes an argument: JSON object of hidden values or `undefined` w
 
 ```jsx
 <Modal title="My App">
-  <Textarea
-    label="Tweet"
-    name="tweet"
-    placeholder="What’s happening?"
-    maxLength={280}
-    required
-  />
+  <Textarea label="Tweet" name="tweet" placeholder="What’s happening?" maxLength={280} required />
 </Modal>
 ```
 

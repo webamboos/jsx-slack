@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "@webamboos/jsx-slack",
+    "module": "es2022",
+    "moduleResolution": "bundler",
+    "noImplicitAny": false,
+    "declaration": true,
+    "declarationDir": "dist",
+    "emitDeclarationOnly": true,
+    "paths": {
+      "@webamboos/jsx-slack/*": ["./*"],
+    },
+    "resolveJsonModule": true,
+    "rootDir": "./src",
+    "strict": true,
+    "target": "es2022",
+    "noErrorTruncation": true,
+    "skipLibCheck": true,
+  },
+  "include": ["src"],
+}

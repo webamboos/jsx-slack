@@ -1,9 +1,5 @@
-lib/
-module/
 tmp/
-types/
 demo/build/
-vendor/
 .parcel-cache
 
 # Created by https://www.gitignore.io/api/node,windows,macos,linux,sublimetext,emacs,vim,visualstudiocode
@@ -147,8 +143,8 @@ typings/
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
-.eslintcache
+# Optional oxlint cache
+.oxlint_cache
 
 # Optional REPL history
 .node_repl_history

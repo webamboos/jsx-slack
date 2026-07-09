@@ -1,0 +1,12 @@
+allowBuilds:
+  "@swc/core": true
+  esbuild: true
+  unrs-resolver: true
+
+packages:
+  - packages/*
+
+catalog:
+  typescript: ^6.0.3
+  vitest: ^4.1.9
+  "@vitest/coverage-v8": ^4.1.9
