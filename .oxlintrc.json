@@ -1,12 +1,11 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "react", "import", "jest", "unicorn"],
+  "plugins": ["typescript", "react", "import", "vitest", "unicorn"],
   "env": { "node": true, "es6": true },
   "rules": {
     "no-console": "warn",
     "react/jsx-key": "off",
     "react/no-children-prop": "off",
-    "react/prop-types": "off",
     "react/no-unknown-property": "off",
     "typescript/no-explicit-any": "off"
   }
